@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KSManager", "KSManager\KSManager.csproj", "{A83CB5C3-5CBB-413A-86D9-2C8B641B7B26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KSManager_API", "KSManager_API\KSManager_API.csproj", "{49BEA200-84EC-4451-B91C-245ECEFB42CB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A83CB5C3-5CBB-413A-86D9-2C8B641B7B26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A83CB5C3-5CBB-413A-86D9-2C8B641B7B26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A83CB5C3-5CBB-413A-86D9-2C8B641B7B26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A83CB5C3-5CBB-413A-86D9-2C8B641B7B26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49BEA200-84EC-4451-B91C-245ECEFB42CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49BEA200-84EC-4451-B91C-245ECEFB42CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49BEA200-84EC-4451-B91C-245ECEFB42CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49BEA200-84EC-4451-B91C-245ECEFB42CB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FD5FDB1C-6C3C-469D-AD7B-ACE6D0B55102}
+	EndGlobalSection
+EndGlobal

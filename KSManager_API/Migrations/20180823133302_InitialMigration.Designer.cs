@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KSManager_API.Migrations
 {
     [DbContext(typeof(Database))]
-    [Migration("20180822084746_NewUserMigration")]
-    partial class NewUserMigration
+    [Migration("20180823133302_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,12 +21,47 @@ namespace KSManager_API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("KSManager_API.DB.PasswordStorageData", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Email");
+
+                    b.Property<byte[]>("Icon");
+
+                    b.Property<DateTime>("LastChanges");
+
+                    b.Property<string>("Note");
+
+                    b.Property<string>("Password");
+
+                    b.Property<string>("SecurityAnswer");
+
+                    b.Property<string>("SecurityQuestion");
+
+                    b.Property<string>("Title")
+                        .IsRequired();
+
+                    b.Property<string>("Url");
+
+                    b.Property<Guid>("UserId");
+
+                    b.Property<string>("Username");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PasswordStorageDatas");
+                });
+
             modelBuilder.Entity("KSManager_API.DB.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Birthday");
+                    b.Property<DateTime?>("Birthday");
 
                     b.Property<string>("FirstName")
                         .HasMaxLength(64);
@@ -41,13 +76,21 @@ namespace KSManager_API.Migrations
                         .IsRequired()
                         .HasMaxLength(32);
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(64);
 
                     b.HasKey("Id");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("KSManager_API.DB.PasswordStorageData", b =>
+                {
+                    b.HasOne("KSManager_API.DB.User", "User")
+                        .WithMany("PasswordStorageDatas")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

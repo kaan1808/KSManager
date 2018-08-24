@@ -15,7 +15,7 @@ namespace KSManager_API.DB
 
         [Required]
         [StringLength(64)]
-        public string UserName { get; set; }
+        public string Username { get; set; }
 
         [Required]
         public byte[] Password { get; set; }
@@ -30,6 +30,11 @@ namespace KSManager_API.DB
         [StringLength(64)]
         public string LastName { get; set; }
 
-        public DateTime Birthday { get; set; }
+        public DateTime? Birthday { get; set; }
+
+        public virtual ICollection<PasswordStorageData> PasswordStorageDatas { get; set; }
+
+        
+
     }
 }

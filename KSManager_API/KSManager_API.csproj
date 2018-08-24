@@ -6,6 +6,12 @@
 
   <ItemGroup>
     <Compile Remove="Migrations\20180822083846_InitialMigration#.cs" />
+    <Compile Remove="Migrations\20180822084147_InitialMigration.cs" />
+    <Compile Remove="Migrations\20180822084344_UserMigration.cs" />
+    <Compile Remove="Migrations\20180822084746_NewUserMigration.cs" />
+    <Compile Remove="Migrations\20180823102014_Migration_1.0.cs" />
+    <Compile Remove="Migrations\20180823132028_InitialMigration.cs" />
+    <Compile Remove="Migrations\20180823133217_InitialMigration.cs" />
   </ItemGroup>
 
   <ItemGroup>

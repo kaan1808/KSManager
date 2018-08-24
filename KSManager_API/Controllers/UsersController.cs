@@ -23,17 +23,25 @@ namespace KSManager_API.Controllers
         [HttpGet]
         public IEnumerable<User> Get()
         {
-            return _database.User;
+            var user = _database.User.Select(x => new User
+            {
+                Id = x.Id,
+                FirstName = x.FirstName,
+                Username = x.Username,
+                Birthday = x.Birthday,
+                LastName = x.LastName
+            });
+            return user;
         }
 
         // GET api/values/5
-        [HttpGet("{id}", Name ="GetUser")]
+        [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {
             var user = _database.User.Find(id);
 
             if (user != null)
-                return Ok(user);
+                return Ok(new {user.Id, user.LastName, UserName = user.Username, user.FirstName, user.Birthday});
             return NotFound();
         }
 
@@ -41,25 +49,24 @@ namespace KSManager_API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]User user)
         {
-            if (user != null)
-            {
-                _database.User.Add(user);
-                await _database.SaveChangesAsync();
-                return Ok(user.Id);
-            }
-            return BadRequest();
-        }   
+            if (user.Id == Guid.Empty || user.Username == null || user.Salt == null || user.Password == null)
+                return BadRequest();
+
+            _database.User.Add(user);
+            await _database.SaveChangesAsync();
+            return Ok(user.Id);
+        }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public IActionResult Put(Guid id, [FromBody]User value)
+        public async Task<IActionResult> Put(Guid id, [FromBody]User value)
         {
             var user = _database.User.Find(id);
             if (user == null)
                 return NotFound();
 
-            if (!user.UserName.Equals(value.UserName) && value.UserName != null)
-                user.UserName = value.UserName;
+            if (!user.Username.Equals(value.Username) && value.Username != null)
+                user.Username = value.Username;
 
             if (!user.FirstName.Equals(value.FirstName) && value.FirstName != null)
                     user.FirstName = value.FirstName;
@@ -72,21 +79,21 @@ namespace KSManager_API.Controllers
 
 
             _database.User.Update(user);
-            _database.SaveChanges();
+            await _database.SaveChangesAsync();
             return NoContent();
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             var user = _database.User.Find(id);
             if (user == null)
                 return NotFound();
 
-            _database.Remove(user);
-            _database.SaveChanges();
-            return NoContent();
+            _database.User.Remove(user);
+            await _database.SaveChangesAsync();
+            return Ok();
         }
     }
 }

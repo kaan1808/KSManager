@@ -2,9 +2,9 @@
 
 namespace KSManager_API.DB
 {
-    public class Database : DbContext
+    public class KsDatabase : DbContext
     {
-        public Database(DbContextOptions<Database> options)
+        public KsDatabase(DbContextOptions<KsDatabase> options)
             :base(options)
         {
         }
@@ -16,6 +16,14 @@ namespace KSManager_API.DB
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=(localdb)\\KSManager;Database=KSManager;Trusted_Connection=True;");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .Entity<User>()
+                .HasIndex(u => u.Username)
+                .IsUnique();
         }
     }
 }

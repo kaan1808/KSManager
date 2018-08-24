@@ -12,25 +12,25 @@ namespace KSManager_API.Controllers
     [Route("api/[controller]")]
     public class PasswordStorageDatasController : Controller
     {
-        private readonly Database _database;
+        private readonly KsDatabase _ksDatabase;
 
-        public PasswordStorageDatasController(Database database)
+        public PasswordStorageDatasController(KsDatabase ksDatabase)
         {
-            _database = database;
+            _ksDatabase = ksDatabase;
         }
 
         // GET: api/<controller>
         [HttpGet]
         public IEnumerable<PasswordStorageData> Get()
         {
-            return _database.PasswordStorageDatas;
+            return _ksDatabase.PasswordStorageDatas;
         }
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {
-            var entry = _database.PasswordStorageDatas.Find(id);
+            var entry = _ksDatabase.PasswordStorageDatas.Find(id);
 
             if (entry != null)
                 return Ok(entry);
@@ -45,8 +45,8 @@ namespace KSManager_API.Controllers
             if (value.Id == Guid.Empty || value.User.Id == Guid.Empty || value.Title == null ||
                 value.LastChanges == DateTime.MinValue) return BadRequest();
 
-            _database.PasswordStorageDatas.Add(value);
-            await _database.SaveChangesAsync();
+            _ksDatabase.PasswordStorageDatas.Add(value);
+            await _ksDatabase.SaveChangesAsync();
             return Ok(value.Id);
 
         }
@@ -55,7 +55,7 @@ namespace KSManager_API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody]PasswordStorageData value)
         {
-            await _database.SaveChangesAsync();
+            await _ksDatabase.SaveChangesAsync();
             return Ok();
         }
 
@@ -63,12 +63,12 @@ namespace KSManager_API.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
-            var entry = _database.PasswordStorageDatas.Find(id);
+            var entry = _ksDatabase.PasswordStorageDatas.Find(id);
             if (entry == null)
                 return NotFound();
 
-            _database.PasswordStorageDatas.Remove(entry);
-            _database.SaveChanges();
+            _ksDatabase.PasswordStorageDatas.Remove(entry);
+            _ksDatabase.SaveChanges();
             return Ok();
         }
     }

@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace KSManager_API.Migrations
 {
-    [DbContext(typeof(Database))]
-    partial class DatabaseModelSnapshot : ModelSnapshot
+    [DbContext(typeof(KsDatabase))]
+    partial class KsDatabaseModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -64,11 +64,14 @@ namespace KSManager_API.Migrations
                     b.Property<string>("FirstName")
                         .HasMaxLength(64);
 
+                    b.Property<int>("Iterations");
+
                     b.Property<string>("LastName")
                         .HasMaxLength(64);
 
                     b.Property<byte[]>("Password")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(64);
 
                     b.Property<byte[]>("Salt")
                         .IsRequired()
@@ -79,6 +82,9 @@ namespace KSManager_API.Migrations
                         .HasMaxLength(64);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("User");
                 });

@@ -13,8 +13,9 @@ namespace KSManager_API.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Username = table.Column<string>(maxLength: 64, nullable: false),
-                    Password = table.Column<byte[]>(nullable: false),
+                    Password = table.Column<byte[]>(maxLength: 64, nullable: false),
                     Salt = table.Column<byte[]>(maxLength: 32, nullable: false),
+                    Iterations = table.Column<int>(nullable: false),
                     FirstName = table.Column<string>(maxLength: 64, nullable: true),
                     LastName = table.Column<string>(maxLength: 64, nullable: true),
                     Birthday = table.Column<DateTime>(nullable: true)
@@ -56,6 +57,12 @@ namespace KSManager_API.Migrations
                 name: "IX_PasswordStorageDatas_UserId",
                 table: "PasswordStorageDatas",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Username",
+                table: "User",
+                column: "Username",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

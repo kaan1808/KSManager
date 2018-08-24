@@ -8,10 +8,6 @@ namespace KSManager.Model
 {
     public class PasswordStorageData
     {
-        public Guid Id { get; set; }
-
-        public User User { get; set; }
-
         public string Title { get; set; }
 
         public byte[] Icon { get; set; }

@@ -12,18 +12,18 @@ namespace KSManager_API.Controllers
     public class UsersController : Controller
     {
 
-        private readonly Database _database;
+        private readonly KsDatabase _ksDatabase;
 
-        public UsersController(Database database)
+        public UsersController(KsDatabase ksDatabase)
         {
-            _database = database;
+            _ksDatabase = ksDatabase;
         }
 
         // GET api/values
         [HttpGet]
         public IEnumerable<User> Get()
         {
-            var user = _database.User.Select(x => new User
+            var user = _ksDatabase.User.Select(x => new User
             {
                 Id = x.Id,
                 FirstName = x.FirstName,
@@ -38,7 +38,7 @@ namespace KSManager_API.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {
-            var user = _database.User.Find(id);
+            var user = _ksDatabase.User.Find(id);
 
             if (user != null)
                 return Ok(new {user.Id, user.LastName, UserName = user.Username, user.FirstName, user.Birthday});
@@ -52,8 +52,8 @@ namespace KSManager_API.Controllers
             if (user.Id == Guid.Empty || user.Username == null || user.Salt == null || user.Password == null)
                 return BadRequest();
 
-            _database.User.Add(user);
-            await _database.SaveChangesAsync();
+            _ksDatabase.User.Add(user);
+            await _ksDatabase.SaveChangesAsync();
             return Ok(user.Id);
         }
 
@@ -61,7 +61,7 @@ namespace KSManager_API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id, [FromBody]User value)
         {
-            var user = _database.User.Find(id);
+            var user = _ksDatabase.User.Find(id);
             if (user == null)
                 return NotFound();
 
@@ -78,8 +78,8 @@ namespace KSManager_API.Controllers
                     user.Birthday = value.Birthday;
 
 
-            _database.User.Update(user);
-            await _database.SaveChangesAsync();
+            _ksDatabase.User.Update(user);
+            await _ksDatabase.SaveChangesAsync();
             return NoContent();
         }
 
@@ -87,12 +87,12 @@ namespace KSManager_API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var user = _database.User.Find(id);
+            var user = _ksDatabase.User.Find(id);
             if (user == null)
                 return NotFound();
 
-            _database.User.Remove(user);
-            await _database.SaveChangesAsync();
+            _ksDatabase.User.Remove(user);
+            await _ksDatabase.SaveChangesAsync();
             return Ok();
         }
     }

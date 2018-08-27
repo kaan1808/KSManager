@@ -51,17 +51,16 @@ namespace KSManager.ViewModels
             try
             {
                 await _ksManagerApi.Authenticate(Username, Password);
+
+                _eventAggregator.PublishOnUIThread(new NavigateMessage
+                {
+                    Screen = IoC.Get<ManagerViewModel>()
+                });
             }
             catch (KsManagerApiException ex)
             {
                 MessageBox.Show(ex.Message);
-                return;
             }
-
-            _eventAggregator.PublishOnUIThread(new NavigateMessage
-            {
-                Screen = new ManagerViewModel()
-            });
         }
     }
 }

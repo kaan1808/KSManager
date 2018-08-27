@@ -24,6 +24,15 @@ namespace KSManager_API.DB
                 .Entity<User>()
                 .HasIndex(u => u.Username)
                 .IsUnique();
+
+            modelBuilder.Entity<PasswordStorageData>()
+                .Property(psd => psd.LastChanges)
+                .HasDefaultValueSql("GETUTCDATE()")
+                .ValueGeneratedOnAddOrUpdate();
+
+            modelBuilder.Entity<PasswordStorageData>()
+                .Property(psd => psd.IsDeleted)
+                .HasDefaultValue(false);
         }
     }
 }

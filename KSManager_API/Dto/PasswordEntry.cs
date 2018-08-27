@@ -1,44 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
-namespace KSManager_API.DB
+namespace KSManager_API.Dto
 {
-    public class PasswordStorageData
+    public class PasswordEntry
     {
-
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [JsonProperty("id")]
         public Guid Id { get; set; }
 
-        [Required]
-        public User User { get; set; }
-
-        [Required]
+        [JsonProperty("title")]
         public string Title { get; set; }
 
-        [MaxLength(524288)]
-        public byte[] Icon { get; set; }
-
+        [JsonProperty("username")]
         public string Username { get; set; }
 
+        [JsonProperty("icon")]
+        public byte[] Icon { get; set; }
+
+        [JsonProperty("password")]
         public string Password { get; set; }
 
+        [JsonProperty("email")]
         public string Email { get; set; }
 
+        [JsonProperty("url")]
         public string Url { get; set; }
-        
+
+        [JsonProperty("securityQuestion")]
         public string SecurityQuestion { get; set; }
 
+        [JsonProperty("securityAnswer")]
         public string SecurityAnswer { get; set; }
-        
+
+        [JsonProperty("note")]
         public string Note { get; set; }
 
+        [JsonProperty("lastChanges")]
         public DateTime LastChanges { get; set; }
-
-        public bool IsDeleted { get; set; }
     }
 }

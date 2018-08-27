@@ -34,6 +34,7 @@ namespace KSManager
                 .Singleton<MainViewModel>()
                 .Singleton<LoginViewModel>()
                 .Singleton<ManagerViewModel>()
+                .Singleton<PasswordManagerViewModel>()
 
                 .Singleton<IKsManagerApi, KsManagerApi>();
         }

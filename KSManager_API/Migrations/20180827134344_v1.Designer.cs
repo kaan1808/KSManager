@@ -4,14 +4,16 @@ using KSManager_API.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace KSManager_API.Migrations
 {
     [DbContext(typeof(KsDatabase))]
-    partial class KsDatabaseModelSnapshot : ModelSnapshot
+    [Migration("20180827134344_v1")]
+    partial class v1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,10 +30,6 @@ namespace KSManager_API.Migrations
 
                     b.Property<byte[]>("Icon")
                         .HasMaxLength(524288);
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(false);
 
                     b.Property<DateTime>("LastChanges")
                         .ValueGeneratedOnAddOrUpdate()

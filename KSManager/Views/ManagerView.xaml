@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KSManager.Views"
+             xmlns:micro="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -15,16 +16,19 @@
 
         <Border Grid.Column="1" Background="Black"></Border>
 
-        <ListBox Grid.Column="0"
-                 Margin="5"
-                 HorizontalAlignment="Stretch">
+        <ListBox x:Name="Modules" Grid.Column="0">
+
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type micro:Screen}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding DisplayName}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
 
         <Grid Grid.Column="2">
-            <ScrollViewer>
-                <ContentControl x:Name="ActiveItem"></ContentControl>
-            </ScrollViewer>
+            <ContentControl x:Name="ActiveItem"/>
         </Grid>
-
     </Grid>
 </UserControl>

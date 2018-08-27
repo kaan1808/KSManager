@@ -44,7 +44,8 @@ namespace KSManager_API.Controllers
 
                         var claims = new[]
                         {
-                            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                            new Claim("jit", Guid.NewGuid().ToString())
                         };
 
                         var token = new JwtSecurityToken("KSManager API", "KSManager", claims,

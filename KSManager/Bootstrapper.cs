@@ -29,9 +29,11 @@ namespace KSManager
         {
             _container
                 .Singleton<IWindowManager, WindowManager>()
+                .Singleton<IEventAggregator, EventAggregator>()
 
                 .Singleton<MainViewModel>()
                 .Singleton<LoginViewModel>()
+                .Singleton<ManagerViewModel>()
 
                 .Singleton<IKsManagerApi, KsManagerApi>();
         }

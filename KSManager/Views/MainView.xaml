@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KSManager.Views"
         mc:Ignorable="d"
-        Title="MainView" Height="450" Width="800">
+        Title="KSManager" SizeToContent="WidthAndHeight" MinHeight="500" MinWidth="1000" WindowStartupLocation="CenterScreen">
 
     <Grid>
         <ContentControl x:Name="ActiveItem" ></ContentControl>

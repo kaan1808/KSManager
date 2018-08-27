@@ -4,28 +4,87 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KSManager.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Images/Background_Tomo_Ni_Subs.jpg"/>
+        </Grid.Background>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="3*"/>
-        </Grid.ColumnDefinitions>
+        <Rectangle Opacity="0.3">
+            <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="-1,-1" EndPoint="1.5,1.5">
+                    <GradientStop Color="red" Offset="0.1"/>
+                    <GradientStop Color="Blue" Offset="1.3"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
 
-        <StackPanel Grid.Column="1">
+        <Grid VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
 
-            <Label Content="Username"></Label>
-            <TextBox x:Name="Username" Margin="0,5,0,0"></TextBox>
+            <DockPanel>
+                <Border  Width="260" Margin="0,30,0,30" CornerRadius="10" Background="MintCream" DockPanel.Dock="Top">
+                    <StackPanel>
+                        <TextBlock Text="KSManger" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="40">
+                            <TextBlock.Foreground>
+                                <LinearGradientBrush>
+                                    <GradientStop Color="red" Offset="0.1"/>
+                                    <GradientStop Color="Blue" Offset="1.4"/>
+                                </LinearGradientBrush>
+                            </TextBlock.Foreground>
+                        </TextBlock>
 
-            <Label Content="Password"/>
-            <TextBox x:Name="Password" Margin="0,5,0,0"></TextBox>
 
-            <Button x:Name="Login" Content="Login" Margin="0,5,0,0"></Button>
+                        <TextBox x:Name="Username"
+                                 Width="180" 
+                                 Margin="10,15,10,10" 
+                                 materialDesign:HintAssist.Hint="Username" 
+                                 materialDesign:HintAssist.IsFloating="True"/>
 
 
-</StackPanel>
-            
+                        <TextBox x:Name="Password"
+                                 Width="180" 
+                                 Margin="10,15,10,10" 
+                                 materialDesign:HintAssist.Hint="Password" 
+                                 materialDesign:HintAssist.IsFloating="True"/>
+
+                        <Button x:Name="Login"
+                                Width="180" 
+                                Margin="10,20,10,10" 
+                                Content="LOGIN"/>
+
+                        <CheckBox x:Name="RememberMe"
+                                  Content="Remember me" 
+                                  HorizontalAlignment="Center"
+                                  Margin="10,5,10,10"/>
+                    </StackPanel>
+                </Border>
+
+                <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-20,0,0">
+
+                    <TextBlock Text="Dont't have an account?" 
+                               VerticalAlignment="Center"
+                               Margin="5"
+                               FontWeight="DemiBold"
+                               Foreground="White"/>
+
+                    <Button Content="REGISTER"
+                            Margin="5"
+                            Background="Transparent"
+                            materialDesign:ShadowAssist.ShadowDepth="Depth5"
+                            BorderBrush="White"
+                            Foreground="White"/>
+                </StackPanel>
+
+            </DockPanel>
+        </Grid>
     </Grid>
+
+
+
+
 </UserControl>

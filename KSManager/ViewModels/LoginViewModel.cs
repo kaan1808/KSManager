@@ -12,13 +12,16 @@ namespace KSManager.ViewModels
     public class LoginViewModel : Screen
     {
         private readonly IKsManagerApi _ksManagerApi;
-
+        private readonly IEventAggregator _eventAggregator;
+    
         private string _username;
         private string _password;
 
-        public LoginViewModel(IKsManagerApi ksManagerApi)
+        public LoginViewModel(IKsManagerApi ksManagerApi, IEventAggregator eventAggregator)
         {
+            _eventAggregator = eventAggregator;
             _ksManagerApi = ksManagerApi;
+            
         }
 
         public string Username
@@ -52,11 +55,13 @@ namespace KSManager.ViewModels
             catch (KsManagerApiException ex)
             {
                 MessageBox.Show(ex.Message);
+                return;
             }
 
-            MessageBox.Show("Hi");
-
+            _eventAggregator.PublishOnUIThread(new NavigateMessage
+            {
+                Screen = new ManagerViewModel()
+            });
         }
-
     }
 }

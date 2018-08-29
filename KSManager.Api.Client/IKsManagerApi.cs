@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using KSManager_API.Dto;
+using KSManager.Api.Client.Model;
+
 
 namespace KSManager.Api
 {
@@ -19,5 +20,11 @@ namespace KSManager.Api
         Task<IEnumerable<SmallPasswordEntry>> GetPasswordEntriesSmall();
 
         Task<IEnumerable<SmallPasswordEntry>> GetPasswordEntriesSmall(CancellationToken cancellationToken);
+
+        Task<PasswordEntry> GetPasswordEntry(Guid id);
+        Task<PasswordEntry> GetPasswordEntry(Guid id,CancellationToken cancellationToken);
+
+        Task UpdatePasswordEntry(PasswordEntry entry);
+        Task UpdatePasswordEntry(PasswordEntry entry, CancellationToken cancellationToken);
     }
 }

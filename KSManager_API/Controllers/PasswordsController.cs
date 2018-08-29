@@ -97,5 +97,39 @@ namespace KSManager_API.Controllers
             await _database.SaveChangesAsync();
             return Ok();
         }
+
+        [HttpPut]
+        public async Task<ActionResult> Update([FromBody] PasswordEntry entry)
+        {
+            if (entry == null)
+                return BadRequest(new { message = "Could not parse password entry" });
+            
+            var userId = Guid.Parse(User.Claims.SingleOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
+            var user = await _database.User.SingleOrDefaultAsync(x => x.Id == userId);
+            if (user == null)
+                return NotFound();
+
+            if (string.IsNullOrEmpty(entry.Title))
+                return BadRequest(new {message = "Title is missing"});
+            if(entry.Id == Guid.Empty)
+                return BadRequest(new { message = "Id is missing" });
+
+            var oldEntry = await _database.PasswordStorageDatas.SingleOrDefaultAsync(x => x.User == user && x.Id == entry.Id && !x.IsDeleted);
+
+            if (oldEntry == null)
+                return NotFound(new {message = "Entry not found"});
+
+            oldEntry.Title = entry.Title;
+            oldEntry.Email = entry.Email;
+            oldEntry.Icon = entry.Icon;
+            oldEntry.Password = entry.Password;
+            oldEntry.Url = entry.Url;
+            oldEntry.Username = entry.Username;
+            oldEntry.SecurityAnswer = entry.SecurityAnswer;
+            oldEntry.SecurityQuestion = entry.SecurityQuestion;
+
+            await _database.SaveChangesAsync();
+            return Ok();
+        }
     }
 }

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using KSManager.Api.Client.Helper;
 using KSManager.Api.Client.Model;
-using KSManager_API.Dto;
 using Newtonsoft.Json;
 
 namespace KSManager.Api
@@ -38,15 +38,22 @@ namespace KSManager.Api
             var uri = "login/" + "?username=" + Uri.EscapeDataString(username) + "&password=" +
                       Uri.EscapeDataString(password);
 
-            var json = await _httpClient.GetJsonAsync(uri, cancellationToken);
+            try
+            {
+                var json = await _httpClient.GetJsonAsync(uri, cancellationToken);
 
-            if (json.StatusCode != System.Net.HttpStatusCode.OK)
-                throw new KsManagerApiException("Authentication failed");
+                if (json.StatusCode != HttpStatusCode.OK)
+                    throw new KsManagerApiException("Authentication failed");
 
-            var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(json.Json);
+                var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(json.Json);
 
-            _accessToken = loginResponse.AccessToken;
-            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_accessToken}");
+                _accessToken = loginResponse.AccessToken;
+                _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_accessToken}");
+            }
+            catch (Exception ex)
+            {
+                throw new KsManagerApiException("Reqeust failed", ex);
+            }
         }
 
         public async Task<IEnumerable<SmallPasswordEntry>> GetPasswordEntriesSmall()
@@ -58,12 +65,63 @@ namespace KSManager.Api
         {
             const string uri = "passwords/small/";
 
-            var json = await _httpClient.GetJsonAsync(uri, cancellationToken);
+            try
+            {
+                var json = await _httpClient.GetJsonAsync(uri, cancellationToken);
 
-            if (json.StatusCode != System.Net.HttpStatusCode.OK)
-                throw new KsManagerApiException("Request failed");
+                if (json.StatusCode != HttpStatusCode.OK)
+                    throw new KsManagerApiException("Request failed");
 
-            return JsonConvert.DeserializeObject<IEnumerable<SmallPasswordEntry>>(json.Json);
+                return JsonConvert.DeserializeObject<IEnumerable<SmallPasswordEntry>>(json.Json);
+            }
+            catch (Exception ex)
+            {
+                throw new KsManagerApiException("Reqeust failed", ex);
+            }
+        }
+
+        public Task<PasswordEntry> GetPasswordEntry(Guid id)
+        {
+            return GetPasswordEntry(id, CancellationToken.None);
+        }
+
+        public async Task<PasswordEntry> GetPasswordEntry(Guid id, CancellationToken cancellationToken)
+        {
+            string uri = "passwords/" + id;
+
+            try
+            {
+                var json = await _httpClient.GetJsonAsync(uri, cancellationToken);
+                if (json.StatusCode != System.Net.HttpStatusCode.OK)
+                    throw new KsManagerApiException("Request failed");
+
+                return JsonConvert.DeserializeObject<PasswordEntry>(json.Json);
+            }
+            catch (Exception ex)
+            {
+                throw new KsManagerApiException("Request failed", ex);
+            }
+        }
+
+        public Task UpdatePasswordEntry(PasswordEntry entry)
+        {
+            return UpdatePasswordEntry(entry, CancellationToken.None);
+        }
+
+        public async Task UpdatePasswordEntry(PasswordEntry entry, CancellationToken cancellationToken)
+        {
+            string uri = "passwords/";
+            try
+            {
+                var json = JsonConvert.SerializeObject(entry);
+                var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+                await _httpClient.PutAsync(uri, stringContent, cancellationToken);
+             
+            }
+            catch (Exception ex)
+            {
+                throw new KsManagerApiException("Request failed", ex);
+            }
         }
     }
 }

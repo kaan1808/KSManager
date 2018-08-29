@@ -5,30 +5,60 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KSManager.Views"
              xmlns:micro="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.ColumnDefinitions >
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="5"/>
-            <ColumnDefinition Width="10*"/>
-        </Grid.ColumnDefinitions>
+            d:DesignHeight="450" d:DesignWidth="800" >
 
-        <Border Grid.Column="1" Background="Black"></Border>
+    <DockPanel>
+        <Border DockPanel.Dock="Top" BorderBrush="Black" BorderThickness="0,0,0,1">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="File">
+                    <MenuItem Header="Settings"/>
+                </MenuItem>
+                <MenuItem Header="Edit">
 
-        <ListBox x:Name="Modules" Grid.Column="0">
+                </MenuItem>
+                <MenuItem Header="View">
 
-            <ListBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type micro:Screen}">
-                    <StackPanel>
-                        <TextBlock Text="{Binding DisplayName}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                </MenuItem>
+                <MenuItem Header="Tool">
 
-        <Grid Grid.Column="2">
-            <ContentControl x:Name="ActiveItem"/>
+                </MenuItem>
+                <MenuItem Header="Window">
+
+                </MenuItem>
+                <MenuItem Header="Help">
+
+                </MenuItem>
+            </Menu>
+        </Border>
+        
+
+        <Grid>
+            <Grid.ColumnDefinitions >
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="3*" MinWidth="10"/>
+                <ColumnDefinition Width="2"/>
+                <ColumnDefinition Width="10*"/>
+            </Grid.ColumnDefinitions>
+
+            <GridSplitter Grid.Column="2" Width="2" Background="Black" Opacity="0.5" HorizontalAlignment="Stretch"></GridSplitter>
+
+            <ListBox x:Name="Modules" Grid.Column="1" Background="GhostWhite">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type micro:Screen}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="{Binding PackIconKind}" Margin="0,0,5,0"/>
+                            <TextBlock Text="{Binding DisplayName}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Grid Grid.Column="3">
+                <ContentControl x:Name="ActiveItem"/>
+            </Grid>
         </Grid>
-    </Grid>
+    </DockPanel>
+    
 </UserControl>

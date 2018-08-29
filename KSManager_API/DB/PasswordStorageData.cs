@@ -36,7 +36,7 @@ namespace KSManager_API.DB
         public string SecurityAnswer { get; set; }
         
         public string Note { get; set; }
-
+        
         public DateTime LastChanges { get; set; }
 
         public bool IsDeleted { get; set; }

@@ -123,5 +123,49 @@ namespace KSManager.Api
                 throw new KsManagerApiException("Request failed", ex);
             }
         }
+
+
+        public Task AddPasswordEntry(PasswordEntry entry)
+        {
+            return AddPasswordEntry(entry, CancellationToken.None);
+        }
+
+        public async Task AddPasswordEntry(PasswordEntry entry, CancellationToken cancellationToken)
+        {
+            string uri = "passwords/";
+            try
+            {
+                var json = JsonConvert.SerializeObject(entry);
+                var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+                await _httpClient.PostAsync(uri, stringContent, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                throw new KsManagerApiException("Request failed", ex);
+            }
+
+        }
+
+        public Task Register(RegisterObject registerObject)
+        {
+            return Register(registerObject, CancellationToken.None);
+        }
+
+        public async Task Register(RegisterObject registerObject, CancellationToken cancellationToken)
+        {
+            string uri = "login";
+            try
+            {
+                var json = JsonConvert.SerializeObject(registerObject);
+                var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+                await _httpClient.PostAsync(uri, stringContent,cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                throw new KsManagerApiException("Request failed", ex);
+            }
+
+
+        }
     }
 }

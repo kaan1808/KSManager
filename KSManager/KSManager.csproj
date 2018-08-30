@@ -86,6 +86,7 @@
     <Compile Include="Converter\ByteToImageConverter.cs" />
     <Compile Include="Helper\MenuItem.cs" />
     <Compile Include="Model\PasswordEntry.cs" />
+    <Compile Include="Model\RegisterObject.cs" />
     <Compile Include="Model\SmallPasswordEntry.cs" />
     <Compile Include="NavigateMessage.cs" />
     <Compile Include="RelayCommand.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Helper\PasswordHelper.cs" />
     <Compile Include="ViewModels\ManagerViewModel.cs" />
     <Compile Include="ViewModels\PasswordManagerViewModel.cs" />
+    <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
@@ -111,6 +113,9 @@
     </Compile>
     <Compile Include="Views\PasswordManagerView.xaml.cs">
       <DependentUpon>PasswordManagerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RegisterView.xaml.cs">
+      <DependentUpon>RegisterView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
@@ -436,6 +441,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PasswordManagerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RegisterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

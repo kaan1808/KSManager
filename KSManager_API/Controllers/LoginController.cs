@@ -85,6 +85,7 @@ namespace KSManager_API.Controllers
             using (var rfc = new Rfc2898DeriveBytes(registerObject.Password, salt, 50000, HashAlgorithmName.SHA512))
             {
                 user.Password = rfc.GetBytes(64);
+                user.Iterations = 50000;
             }
 
             _database.User.Add(user);

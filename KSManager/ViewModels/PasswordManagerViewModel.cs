@@ -23,6 +23,7 @@ namespace KSManager.ViewModels
         private SmallPasswordEntry _selecetedListEntry;
 
         private PasswordEntry _selectedEntry;
+        private bool _isNewEntry;
 
         private PackIconKind _packIconKind;
 
@@ -31,13 +32,13 @@ namespace KSManager.ViewModels
             _ksManagerApi = ksManagerApi;
             PackIconKind = PackIconKind.Key;
 
-            
+
         }
 
         public PackIconKind PackIconKind
         {
             get => _packIconKind;
-            set => Set(ref _packIconKind, value); 
+            set => Set(ref _packIconKind, value);
         }
 
         public SmallPasswordEntry SelectedListEntry
@@ -77,7 +78,8 @@ namespace KSManager.ViewModels
                     Icon = x.Icon,
                     Username = x.Username
                 }));
-            SelectedListEntry = Entries.First();
+            if(SelectedEntry != null)
+                SelectedListEntry = Entries.First();
         }
 
         private async void LoadEntry(Guid id, CancellationToken cancellationToken)
@@ -85,7 +87,6 @@ namespace KSManager.ViewModels
             try
             {
                 var entry = await _ksManagerApi.GetPasswordEntry(id, cancellationToken);
-
                 SelectedEntry = new PasswordEntry
                 {
                     Id = entry.Id,
@@ -100,6 +101,8 @@ namespace KSManager.ViewModels
                     Url = entry.Url,
                     Username = entry.Username
                 };
+                await _ksManagerApi.AddPasswordEntry(entry, CancellationToken.None);
+                _isNewEntry = false;
             }
             catch (KsManagerApiException ex)
             {
@@ -113,6 +116,22 @@ namespace KSManager.ViewModels
 
         public async Task SaveEntry()
         {
+            if (_isNewEntry)
+            {
+                var newEntry = new Api.Client.Model.PasswordEntry
+                {
+                    Email = SelectedEntry.Email,
+                    Title = SelectedEntry.Title,
+                    SecurityAnswer = SelectedEntry.Securityanswer,
+                    SecurityQuestion = SelectedEntry.Securityquestion,
+                    Icon = SelectedEntry.Icon,
+                    Note = SelectedEntry.Note,
+                    Password = SelectedEntry.Password,
+                    Url = SelectedEntry.Url,
+                    Username = SelectedEntry.Username
+                };
+            }
+
             var content = new Api.Client.Model.PasswordEntry
             {
                 Email = SelectedEntry.Email,
@@ -141,9 +160,10 @@ namespace KSManager.ViewModels
             }
         }
 
-        public async Task NewEntry()
+        public void NewEntry()
         {
-
+            SelectedEntry = new PasswordEntry();
+            _isNewEntry = true;
         }
     }
 }

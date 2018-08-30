@@ -26,5 +26,16 @@ namespace KSManager.Api
 
         Task UpdatePasswordEntry(PasswordEntry entry);
         Task UpdatePasswordEntry(PasswordEntry entry, CancellationToken cancellationToken);
+
+        Task AddPasswordEntry(PasswordEntry entry);
+
+        Task AddPasswordEntry(PasswordEntry entry, CancellationToken cancellationToken);
+
+        Task Register(RegisterObject registerObject);
+
+        Task Register(RegisterObject registerObject, CancellationToken cancellationToken);
+
+
+
     }
 }

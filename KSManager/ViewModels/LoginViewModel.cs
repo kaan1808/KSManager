@@ -30,7 +30,7 @@ namespace KSManager.ViewModels
             set
             {
                 Set(ref _username, value);
-                NotifyOfPropertyChange(nameof(CanLogin));
+                NotifyOfPropertyChange();
             }
         }
 
@@ -55,6 +55,21 @@ namespace KSManager.ViewModels
                 _eventAggregator.PublishOnUIThread(new NavigateMessage
                 {
                     Screen = IoC.Get<ManagerViewModel>()
+                });
+            }
+            catch (KsManagerApiException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        public void Register()
+        {
+            try
+            {
+                 _eventAggregator.PublishOnUIThread(new NavigateMessage
+                {
+                    Screen =  IoC.Get<RegisterViewModel>()
                 });
             }
             catch (KsManagerApiException ex)

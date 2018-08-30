@@ -140,5 +140,10 @@ namespace KSManager.ViewModels
                 listBoxItem.Icon = content.Icon;
             }
         }
+
+        public async Task NewEntry()
+        {
+
+        }
     }
 }

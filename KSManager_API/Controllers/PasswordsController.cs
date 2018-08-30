@@ -131,5 +131,26 @@ namespace KSManager_API.Controllers
             await _database.SaveChangesAsync();
             return Ok();
         }
+
+        [HttpPost]
+        public async Task<ActionResult> Add([FromBody] PasswordEntry entry)
+        {
+            if(entry == null)
+            return BadRequest(new { message = "Could not parse password entry" });
+
+            var userId = Guid.Parse(User.Claims.SingleOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
+            var user = await _database.User.SingleOrDefaultAsync(x => x.Id == userId);
+            if (user == null)
+                return NotFound();
+
+            if (string.IsNullOrEmpty(entry.Title))
+                return BadRequest(new { message = "Title is missing" });
+            if (entry.Id == Guid.Empty)
+                return BadRequest(new { message = "Id is missing" });
+
+            _database.PasswordStorageDatas.AddAsync(entry);
+
+        }
+
     }
 }

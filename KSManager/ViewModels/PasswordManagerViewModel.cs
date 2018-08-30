@@ -109,8 +109,6 @@ namespace KSManager.ViewModels
             catch (OperationCanceledException)
             {
             }
-
-            
         }
 
         public async Task SaveEntry()

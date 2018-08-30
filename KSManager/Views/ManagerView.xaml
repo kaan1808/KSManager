@@ -13,7 +13,11 @@
         <Border DockPanel.Dock="Top" BorderBrush="Black" BorderThickness="0,0,0,1">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="File">
-                    <MenuItem Header="Settings"/>
+                    <MenuItem Header="Settings" x:Name="Settings">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="Settings"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Edit">
 
@@ -32,33 +36,26 @@
                 </MenuItem>
             </Menu>
         </Border>
-        
 
         <Grid>
             <Grid.ColumnDefinitions >
                 <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="3*" MinWidth="10"/>
-                <ColumnDefinition Width="2"/>
-                <ColumnDefinition Width="10*"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <GridSplitter Grid.Column="2" Width="2" Background="Black" Opacity="0.5" HorizontalAlignment="Stretch"></GridSplitter>
-
-            <ListBox x:Name="Modules" Grid.Column="1" Background="GhostWhite">
+            <ListBox x:Name="Modules" Grid.Column="0" Background="{DynamicResource PrimaryHueMidBrush}" MinWidth="35">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type micro:Screen}">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="{Binding PackIconKind}" Margin="0,0,5,0"/>
-                            <TextBlock Text="{Binding DisplayName}"/>
+                            <materialDesign:PackIcon Kind="{Binding PackIconKind}" Margin="0,0,5,0" ToolTip="{Binding DisplayName}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <Grid Grid.Column="3">
+            <Grid Grid.Column="1">
                 <ContentControl x:Name="ActiveItem"/>
             </Grid>
         </Grid>
     </DockPanel>
-    
 </UserControl>

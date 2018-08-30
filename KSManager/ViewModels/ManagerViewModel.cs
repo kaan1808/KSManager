@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Caliburn.Micro;
 using KSManager.Api;
 
@@ -12,13 +13,15 @@ namespace KSManager.ViewModels
         : Conductor<Screen>.Collection.OneActive
     {
         private readonly IEventAggregator _eventAggregator;
+        private readonly IWindowManager _windowManager;
 
         private BindableCollection<Screen> _modules;
         private Screen _selectedModule;
 
-        public ManagerViewModel(IEventAggregator eventAggregator)
+        public ManagerViewModel(IEventAggregator eventAggregator, IWindowManager windowManager)
         {
             _eventAggregator = eventAggregator;
+            _windowManager = windowManager;
 
             Modules = new BindableCollection<Screen>
             {
@@ -42,6 +45,12 @@ namespace KSManager.ViewModels
                 Set(ref _selectedModule, value);
                 ActivateItem(SelectedModule);
             }
+        }
+
+        public void Settings()
+        {
+            var view = new SettingsViewModel(_windowManager,_eventAggregator);
+            _windowManager.ShowDialog(view);
         }
     }
 }

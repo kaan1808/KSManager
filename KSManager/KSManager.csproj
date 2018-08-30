@@ -43,6 +43,9 @@
     <Reference Include="Caliburn.Micro.Platform.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.3.2.0\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Dragablz, Version=0.0.3.203, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dragablz.0.0.3.203\lib\net45\Dragablz.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.1.1.2\lib\net45\MaterialDesignColors.dll</HintPath>
     </Reference>
@@ -55,6 +58,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.3.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -76,6 +80,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controlls\BindablePasswordBox.xaml.cs">
+      <DependentUpon>BindablePasswordBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converter\ByteToImageConverter.cs" />
     <Compile Include="Helper\MenuItem.cs" />
     <Compile Include="Model\PasswordEntry.cs" />
     <Compile Include="Model\SmallPasswordEntry.cs" />
@@ -91,6 +99,7 @@
     <Compile Include="Helper\PasswordHelper.cs" />
     <Compile Include="ViewModels\ManagerViewModel.cs" />
     <Compile Include="ViewModels\PasswordManagerViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
@@ -102,6 +111,9 @@
     </Compile>
     <Compile Include="Views\PasswordManagerView.xaml.cs">
       <DependentUpon>PasswordManagerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -131,8 +143,286 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <Resource Include="Images\Account card.png" />
+    <Resource Include="Images\addthis.png" />
+    <Resource Include="Images\Ads.png" />
+    <Resource Include="Images\Advertising.png" />
+    <Resource Include="Images\Agriculture.png" />
+    <Resource Include="Images\Air signal.png" />
+    <Resource Include="Images\Aladdin lamp.png" />
+    <Resource Include="Images\amazon.png" />
+    <Resource Include="Images\Antivirus.png" />
+    <Resource Include="Images\App window.png" />
+    <Resource Include="Images\appstore.png" />
+    <Resource Include="Images\Arrow bottom left.png" />
+    <Resource Include="Images\ask.png" />
+    <Resource Include="Images\Audio converter.png" />
+    <Resource Include="Images\Audit.png" />
+    <Resource Include="Images\Awards.png" />
+    <Resource Include="Images\badoo.png" />
+    <Resource Include="Images\Balloon.png" />
+    <Resource Include="Images\Bank account.png" />
+    <Resource Include="Images\Barbell.png" />
+    <Resource Include="Images\behance.png" />
+    <Resource Include="Images\Bikini.png" />
+    <Resource Include="Images\bing.png" />
+    <Resource Include="Images\Binoculars.png" />
+    <Resource Include="Images\Black cloud.png" />
+    <Resource Include="Images\Blog writing button.png" />
+    <Resource Include="Images\Blog writing.png" />
+    <Resource Include="Images\blogger.png" />
+    <Resource Include="Images\Blouse.png" />
+    <Resource Include="Images\Bones.png" />
+    <Resource Include="Images\Book of record.png" />
+    <Resource Include="Images\Bookkeeping.png" />
+    <Resource Include="Images\Boot.png" />
+    <Resource Include="Images\Bow.png" />
+    <Resource Include="Images\Bra.png" />
+    <Resource Include="Images\Bread.png" />
+    <Resource Include="Images\Bridge.png" />
+    <Resource Include="Images\Briefs.png" />
+    <Resource Include="Images\Broom.png" />
+    <Resource Include="Images\Cap.png" />
+    <Resource Include="Images\Cash register.png" />
+    <Resource Include="Images\Cassette.png" />
+    <Resource Include="Images\Cementary.png" />
+    <Resource Include="Images\Chicken leg.png" />
+    <Resource Include="Images\Chinese food.png" />
+    <Resource Include="Images\Chip.png" />
+    <Resource Include="Images\Christmas bell.png" />
+    <Resource Include="Images\Cinema.png" />
+    <Resource Include="Images\Close window.png" />
+    <Resource Include="Images\Clothes.png" />
+    <Resource Include="Images\Clubs card.png" />
+    <Resource Include="Images\Coat.png" />
+    <Resource Include="Images\Coctail.png" />
+    <Resource Include="Images\Coin.png" />
+    <Resource Include="Images\Coins.png" />
+    <Resource Include="Images\Collapse.png" />
+    <Resource Include="Images\Condom.png" />
+    <Resource Include="Images\Connect.png" />
+    <Resource Include="Images\Constraints.png" />
+    <Resource Include="Images\Conversion of currency.png" />
+    <Resource Include="Images\Crown.png" />
+    <Resource Include="Images\Crystal.png" />
+    <Resource Include="Images\Cursor arrow.png" />
+    <Resource Include="Images\Cursor drag arrow.png" />
+    <Resource Include="Images\Cursor H split.png" />
+    <Resource Include="Images\Cursor V split.png" />
+    <Resource Include="Images\Cutter.png" />
+    <Resource Include="Images\dailymotion.png" />
+    <Resource Include="Images\Dashboard.png" />
+    <Resource Include="Images\Dating.png" />
+    <Resource Include="Images\delicious.png" />
+    <Resource Include="Images\deviantart.png" />
+    <Resource Include="Images\Diamonds card.png" />
+    <Resource Include="Images\digg.png" />
+    <Resource Include="Images\Disconnect.png" />
+    <Resource Include="Images\discord.png" />
+    <Resource Include="Images\disqus.png" />
+    <Resource Include="Images\Doghouse.png" />
+    <Resource Include="Images\Dollar coin.png" />
+    <Resource Include="Images\Download.png" />
+    <Resource Include="Images\Downstairs.png" />
+    <Resource Include="Images\Dress.png" />
+    <Resource Include="Images\dribbble.png" />
+    <Resource Include="Images\Drive Download.png" />
+    <Resource Include="Images\Drive Upload.png" />
+    <Resource Include="Images\drive.png" />
+    <Resource Include="Images\dropbox.png" />
+    <Resource Include="Images\dupral.png" />
+    <Resource Include="Images\E-books.png" />
+    <Resource Include="Images\Easel.png" />
+    <Resource Include="Images\ebay.png" />
+    <Resource Include="Images\Egg.png" />
+    <Resource Include="Images\Electric power.png" />
+    <Resource Include="Images\email.png" />
+    <Resource Include="Images\envato.png" />
+    <Resource Include="Images\etsy.png" />
+    <Resource Include="Images\Euro coin.png" />
+    <Resource Include="Images\evernote.png" />
+    <Resource Include="Images\Exception.png" />
+    <Resource Include="Images\Exclamation.png" />
+    <Resource Include="Images\Export.png" />
+    <Resource Include="Images\Facebook - small.png" />
+    <Resource Include="Images\facebook.png" />
+    <Resource Include="Images\Finger-print.png" />
+    <Resource Include="Images\Fish skeleton.png" />
+    <Resource Include="Images\Fishing.png" />
+    <Resource Include="Images\Flash drive.png" />
+    <Resource Include="Images\flickr.png" />
+    <Resource Include="Images\Flowers.png" />
+    <Resource Include="Images\Fork.png" />
+    <Resource Include="Images\FreeBSD.png" />
+    <Resource Include="Images\Ghost.png" />
+    <Resource Include="Images\github.png" />
+    <Resource Include="Images\Gold bar.png" />
+    <Resource Include="Images\Google plus.png" />
+    <Resource Include="Images\google-plus.png" />
+    <Resource Include="Images\google.png" />
+    <Resource Include="Images\Grapes.png" />
+    <Resource Include="Images\Grave.png" />
+    <Resource Include="Images\Hamburger.png" />
+    <Resource Include="Images\Hanger.png" />
+    <Resource Include="Images\Hard disk.png" />
+    <Resource Include="Images\Hat.png" />
+    <Resource Include="Images\Hearts card.png" />
+    <Resource Include="Images\High boot.png" />
+    <Resource Include="Images\Hollywood smile.png" />
+    <Resource Include="Images\Hook.png" />
+    <Resource Include="Images\Horseshoe magnet.png" />
+    <Resource Include="Images\Ice-cream.png" />
+    <Resource Include="Images\Illuminant.png" />
+    <Resource Include="Images\Import.png" />
+    <Resource Include="Images\instagram.png" />
+    <Resource Include="Images\Internet explorer.png" />
+    <Resource Include="Images\Jacket.png" />
+    <Resource Include="Images\Java.png" />
+    <Resource Include="Images\Joystick.png" />
+    <Resource Include="Images\Kamasutra.png" />
+    <Resource Include="Images\Karate.png" />
+    <Resource Include="Images\lastfm.png" />
+    <Resource Include="Images\linkedin.png" />
+    <Resource Include="Images\List bullets.png" />
+    <Resource Include="Images\Loading throbber.png" />
+    <Resource Include="Images\Lollipop.png" />
+    <Resource Include="Images\Mask.png" />
+    <Resource Include="Images\Math.png" />
+    <Resource Include="Images\Measure units.png" />
+    <Resource Include="Images\Measure.png" />
+    <Resource Include="Images\Medal.png" />
+    <Resource Include="Images\Message attention.png" />
+    <Resource Include="Images\messenger.png" />
+    <Resource Include="Images\Microprocessor.png" />
+    <Resource Include="Images\Mp3 player.png" />
+    <Resource Include="Images\msn.png" />
+    <Resource Include="Images\Multimedia.png" />
+    <Resource Include="Images\Music converter.png" />
+    <Resource Include="Images\Music disk.png" />
+    <Resource Include="Images\myspace.png" />
+    <Resource Include="Images\Network connection.png" />
+    <Resource Include="Images\News source.png" />
+    <Resource Include="Images\Nick.png" />
+    <Resource Include="Images\Notepad.png" />
+    <Resource Include="Images\Nuclear explosion.png" />
+    <Resource Include="Images\OK smile.png" />
+    <Resource Include="Images\ok.png" />
+    <Resource Include="Images\Paper airplane.png" />
+    <Resource Include="Images\Parachute.png" />
+    <Resource Include="Images\paypal.png" />
+    <Resource Include="Images\Phone settings.png" />
+    <Resource Include="Images\photobucket.png" />
+    <Resource Include="Images\Piano.png" />
+    <Resource Include="Images\picasa.png" />
+    <Resource Include="Images\pinterest.png" />
+    <Resource Include="Images\Piramid.png" />
+    <Resource Include="Images\Plaster.png" />
+    <Resource Include="Images\Playlist.png" />
+    <Resource Include="Images\Plug.png" />
+    <Resource Include="Images\Plumbing.png" />
+    <Resource Include="Images\Podcast.png" />
+    <Resource Include="Images\Pointing.png" />
+    <Resource Include="Images\Pokemon.png" />
+    <Resource Include="Images\Postage Stamp.png" />
+    <Resource Include="Images\Pot flower.png" />
+    <Resource Include="Images\Pound coin.png" />
+    <Resource Include="Images\Premium.png" />
+    <Resource Include="Images\quora.png" />
+    <Resource Include="Images\Radio bug.png" />
+    <Resource Include="Images\reddit.png" />
+    <Resource Include="Images\Refresh key.png" />
+    <Resource Include="Images\Restrooms.png" />
+    <Resource Include="Images\Retweet.png" />
+    <Resource Include="Images\Rotate 3d.png" />
+    <Resource Include="Images\RSS button.png" />
+    <Resource Include="Images\rss.png" />
+    <Resource Include="Images\Runner.png" />
+    <Resource Include="Images\Sail.png" />
+    <Resource Include="Images\Sausage.png" />
+    <Resource Include="Images\Saxophone.png" />
+    <Resource Include="Images\Setup.png" />
+    <Resource Include="Images\Sexy girl.png" />
+    <Resource Include="Images\Shapes.png" />
+    <Resource Include="Images\share.png" />
+    <Resource Include="Images\Shoe.png" />
+    <Resource Include="Images\SIM card.png" />
+    <Resource Include="Images\Site Map.png" />
+    <Resource Include="Images\skype.png" />
+    <Resource Include="Images\slack.png" />
+    <Resource Include="Images\SMS.png" />
+    <Resource Include="Images\snapchat.png" />
+    <Resource Include="Images\Socks.png" />
+    <Resource Include="Images\soundcloud.png" />
+    <Resource Include="Images\Space shuttle.png" />
+    <Resource Include="Images\Space station.png" />
+    <Resource Include="Images\Spades card.png" />
+    <Resource Include="Images\Spider web.png" />
+    <Resource Include="Images\Spiral.png" />
+    <Resource Include="Images\Stamp.png" />
+    <Resource Include="Images\Star wars.png" />
+    <Resource Include="Images\stumbleupon.png" />
+    <Resource Include="Images\Suit.png" />
+    <Resource Include="Images\Sword.png" />
+    <Resource Include="Images\Swords.png" />
+    <Resource Include="Images\Synagogue.png" />
+    <Resource Include="Images\Synchronize.png" />
+    <Resource Include="Images\T-shirt.png" />
+    <Resource Include="Images\tagged.png" />
+    <Resource Include="Images\Tape.png" />
+    <Resource Include="Images\techcrunch.png" />
+    <Resource Include="Images\Theater symbol.png" />
+    <Resource Include="Images\Tie.png" />
+    <Resource Include="Images\Time machine.png" />
+    <Resource Include="Images\Trailer.png" />
+    <Resource Include="Images\Transport.png" />
+    <Resource Include="Images\Trousers.png" />
+    <Resource Include="Images\Tulip.png" />
+    <Resource Include="Images\tumblr.png" />
+    <Resource Include="Images\Tuning fork.png" />
+    <Resource Include="Images\Twitter bird.png" />
+    <Resource Include="Images\twitter.png" />
+    <Resource Include="Images\Typewriter.png" />
+    <Resource Include="Images\Underpants.png" />
+    <Resource Include="Images\Upload.png" />
+    <Resource Include="Images\Upstairs.png" />
+    <Resource Include="Images\USB.png" />
+    <Resource Include="Images\Vampire.png" />
+    <Resource Include="Images\viadeo.png" />
+    <Resource Include="Images\vimeo.png" />
+    <Resource Include="Images\Violin.png" />
+    <Resource Include="Images\vk.png" />
+    <Resource Include="Images\Wall fixture.png" />
+    <Resource Include="Images\Wall.png" />
+    <Resource Include="Images\Watermelon piece.png" />
+    <Resource Include="Images\Weathercock.png" />
+    <Resource Include="Images\Webcam.png" />
+    <Resource Include="Images\weheartit.png" />
+    <Resource Include="Images\weibo.png" />
+    <Resource Include="Images\whatsapp.png" />
+    <Resource Include="Images\Wheet.png" />
+    <Resource Include="Images\Whirl.png" />
+    <Resource Include="Images\Wi-fi router.png" />
+    <Resource Include="Images\Wine bottle.png" />
+    <Resource Include="Images\Wireless signal.png" />
+    <Resource Include="Images\wordpress.png" />
+    <Resource Include="Images\Www.png" />
+    <Resource Include="Images\xing.png" />
+    <Resource Include="Images\XML.png" />
+    <Resource Include="Images\yahoo.png" />
+    <Resource Include="Images\yelp.png" />
+    <Resource Include="Images\Yen coin.png" />
+    <Resource Include="Images\Youtube TV.png" />
+    <Resource Include="Images\youtube.png" />
+    <Resource Include="Images\youtube2.png" />
+    <Resource Include="Images\Yuan coin.png" />
+    <Resource Include="Images\Zoo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controlls\BindablePasswordBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -149,6 +439,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KSManager.Api.Client\KSManager.Api.Client.csproj">
@@ -158,6 +452,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Background_Tomo_Ni_Subs.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\save_black_192x192.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

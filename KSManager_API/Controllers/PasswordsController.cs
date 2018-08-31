@@ -114,22 +114,23 @@ namespace KSManager_API.Controllers
             if(entry.Id == Guid.Empty)
                 return BadRequest(new { message = "Id is missing" });
 
-            var oldEntry = await _database.PasswordStorageDatas.SingleOrDefaultAsync(x => x.User == user && x.Id == entry.Id && !x.IsDeleted);
+            var dbEntry = await _database.PasswordStorageDatas.SingleOrDefaultAsync(x => x.User == user && x.Id == entry.Id && !x.IsDeleted);
 
-            if (oldEntry == null)
+            if (dbEntry == null)
                 return NotFound(new {message = "Entry not found"});
 
-            oldEntry.Title = entry.Title;
-            oldEntry.Email = entry.Email;
-            oldEntry.Icon = entry.Icon;
-            oldEntry.Password = entry.Password;
-            oldEntry.Url = entry.Url;
-            oldEntry.Username = entry.Username;
-            oldEntry.SecurityAnswer = entry.SecurityAnswer;
-            oldEntry.SecurityQuestion = entry.SecurityQuestion;
+            dbEntry.Title = entry.Title;
+            dbEntry.Email = entry.Email;
+            dbEntry.Icon = entry.Icon;
+            dbEntry.Password = entry.Password;
+            dbEntry.Url = entry.Url;
+            dbEntry.Username = entry.Username;
+            dbEntry.SecurityAnswer = entry.SecurityAnswer;
+            dbEntry.SecurityQuestion = entry.SecurityQuestion;
 
             await _database.SaveChangesAsync();
-            return Ok();
+            entry.LastChanges = dbEntry.LastChanges;
+            return Ok(entry);
         }
 
         [HttpPost]
@@ -145,26 +146,28 @@ namespace KSManager_API.Controllers
 
             if (string.IsNullOrEmpty(entry.Title))
                 return BadRequest(new { message = "Title is missing" });
-            if (entry.Id == Guid.Empty)
-                return BadRequest(new { message = "Id is missing" });
 
-            await _database.PasswordStorageDatas.AddAsync(new PasswordStorageData()
+            var dbEntry = new PasswordStorageData
             {
-               Email = entry.Email,
-               Icon = entry.Icon,
-               Id = entry.Id,
-               SecurityAnswer = entry.SecurityAnswer,
-               SecurityQuestion = entry.SecurityQuestion,
-               LastChanges = entry.LastChanges,
-               Note = entry.Note,
-               Password = entry.Password,
-               Title = entry.Title,
-               Url = entry.Url,
-               User = user,
-               Username = entry.Username
-            });
+                Email = entry.Email,
+                Icon = entry.Icon,
+                SecurityAnswer = entry.SecurityAnswer,
+                SecurityQuestion = entry.SecurityQuestion,
+                Note = entry.Note,
+                Password = entry.Password,
+                Title = entry.Title,
+                Url = entry.Url,
+                User = user,
+                Username = entry.Username
+            };
+
+            await _database.PasswordStorageDatas.AddAsync(dbEntry);
             await _database.SaveChangesAsync();
-            return Ok();
+
+            entry.Id = dbEntry.Id;
+            entry.LastChanges = dbEntry.LastChanges;
+
+            return Ok(entry);
         }
 
     }

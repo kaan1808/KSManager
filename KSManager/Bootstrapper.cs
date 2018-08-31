@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using AutoMapper;
 using Caliburn.Micro;
 using KSManager.Api;
 using KSManager.ViewModels;
@@ -19,6 +20,7 @@ namespace KSManager
         {
             _container = new SimpleContainer();
             Initialize();
+            InitializeAutoMapper();
         }
 
         protected override void BuildUp(object instance)
@@ -37,6 +39,7 @@ namespace KSManager
                 .Singleton<RegisterViewModel>()
                 .Singleton<ManagerViewModel>()
                 .Singleton<PasswordManagerViewModel>()
+                .Singleton<PasswordManagerDetailViewModel>()
                 .Singleton<SettingsViewModel>()
                 
                
@@ -61,6 +64,14 @@ namespace KSManager
            
             palette.ReplacePrimaryColor(primaryColor);
             DisplayRootViewFor<MainViewModel>();
+        }
+
+        private void InitializeAutoMapper()
+        {
+            Mapper.Initialize(config =>
+                {
+                    config.CreateMap<Api.Client.Model.PasswordEntry, Model.PasswordEntry>();
+                });
         }
     }
 }

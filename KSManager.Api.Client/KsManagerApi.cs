@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using KSManager.Api.Client.Helper;
 using KSManager.Api.Client.Model;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace KSManager.Api
@@ -103,20 +104,36 @@ namespace KSManager.Api
             }
         }
 
-        public Task UpdatePasswordEntry(PasswordEntry entry)
+        public Task<PasswordEntry> SavePasswordEntry(PasswordEntry entry)
         {
-            return UpdatePasswordEntry(entry, CancellationToken.None);
+            return SavePasswordEntry(entry, CancellationToken.None);
         }
 
-        public async Task UpdatePasswordEntry(PasswordEntry entry, CancellationToken cancellationToken)
+        public async Task<PasswordEntry> SavePasswordEntry(PasswordEntry entry, CancellationToken cancellationToken)
         {
             string uri = "passwords/";
             try
             {
-                var json = JsonConvert.SerializeObject(entry);
-                var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
-                await _httpClient.PutAsync(uri, stringContent, cancellationToken);
-             
+                var requestJson = JsonConvert.SerializeObject(entry);
+
+                if (entry.Id == Guid.Empty)
+                {
+                    var postResponse = await _httpClient.PostJsonAsync(uri, requestJson, cancellationToken);
+                    if (postResponse.StatusCode != HttpStatusCode.OK)
+                        throw new KsManagerApiException("Request failed");
+
+                    var updatedEntry = JsonConvert.DeserializeObject<PasswordEntry>(postResponse.Json);
+                    return updatedEntry;
+                }
+                else
+                {
+                    var putResponse = await _httpClient.PutJsonAsync(uri, requestJson, cancellationToken);
+                    if (putResponse.StatusCode != HttpStatusCode.OK)
+                        throw new KsManagerApiException("Request failed");
+
+                    var updatedEntry = JsonConvert.DeserializeObject<PasswordEntry>(putResponse.Json);
+                    return updatedEntry;
+                }
             }
             catch (Exception ex)
             {
@@ -124,45 +141,60 @@ namespace KSManager.Api
             }
         }
 
-
-        public Task AddPasswordEntry(PasswordEntry entry)
+        public Task DeletePasswordEntry(Guid id)
         {
-            return AddPasswordEntry(entry, CancellationToken.None);
+            throw new NotImplementedException();
         }
 
-        public async Task AddPasswordEntry(PasswordEntry entry, CancellationToken cancellationToken)
+        public async Task DeletePasswordEntry(Guid id, CancellationToken cancellationToken)
         {
-            string uri = "passwords/";
+            string uri = "passwords/" + id;
             try
             {
-                var json = JsonConvert.SerializeObject(entry);
-                var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
-                await _httpClient.PostAsync(uri, stringContent, cancellationToken);
+                if (id == Guid.Empty)
+                    throw new KsManagerApiException("Request failed");
+                await _httpClient.DeleteJsonAsync(uri, CancellationToken.None);
+
             }
             catch (Exception ex)
             {
                 throw new KsManagerApiException("Request failed", ex);
             }
-
         }
 
-        public Task Register(RegisterObject registerObject)
+        public Task<RegisterObject> Register(RegisterObject registerObject)
         {
             return Register(registerObject, CancellationToken.None);
         }
 
-        public async Task Register(RegisterObject registerObject, CancellationToken cancellationToken)
+        public async Task<RegisterObject> Register(RegisterObject registerObject, CancellationToken cancellationToken)
         {
             string uri = "login";
             try
             {
                 var json = JsonConvert.SerializeObject(registerObject);
-                var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
-                await _httpClient.PostAsync(uri, stringContent,cancellationToken);
+
+                var response = await _httpClient.PostJsonAsync(uri, json, cancellationToken);
+
+
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    var type = new {message = string.Empty};
+                    var message = JsonConvert.DeserializeAnonymousType(response.Json, type);
+                    throw new KsManagerApiException(message.message);
+                }
+
+
+                var registered = JsonConvert.DeserializeObject<RegisterObject>(response.Json);
+                return registered;
+            }
+            catch (KsManagerApiException)
+                {
+                throw;
             }
             catch (Exception ex)
             {
-                throw new KsManagerApiException("Request failed", ex);
+                throw new KsManagerApiException(ex.Message, ex);
             }
 
 

@@ -24,17 +24,14 @@ namespace KSManager.ViewModels
             _eventAggregator = eventAggregator;
             _ksManagerApi = ksManagerApi;
         }
-
-        public RelayCommand<object> RegisterCommand =>
-            new RelayCommand<object>(RegisterCommandExecute, RegisterCommandCanExecute);
-
+        
         public string Username
         {
             get => _username;
             set
             {
                 Set(ref _username, value);
-                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => CanRegister);
             }
         }
 
@@ -44,7 +41,7 @@ namespace KSManager.ViewModels
             set
             {
                 Set(ref _password, value);
-                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => CanRegister);
             }
         }
 
@@ -54,7 +51,7 @@ namespace KSManager.ViewModels
             set
             {
                 Set(ref _repeatPassword, value);
-                
+                NotifyOfPropertyChange(() => CanRegister);
             }
         }
 
@@ -71,11 +68,10 @@ namespace KSManager.ViewModels
             });
         }
 
-        private bool RegisterCommandCanExecute(object obj) => !string.IsNullOrWhiteSpace(Username) && 
-                                                              !string.IsNullOrWhiteSpace(Password) &&
-                                                              !string.IsNullOrWhiteSpace(RepeatPassword) && Password.Equals(RepeatPassword);
+        public bool CanRegister => !string.IsNullOrWhiteSpace(Username) &&
+                                    !string.IsNullOrWhiteSpace(Password) && Password.Equals(RepeatPassword);
 
-        private async void RegisterCommandExecute(object obj)
+        public async void Register()
         {
             try
             {
@@ -86,16 +82,17 @@ namespace KSManager.ViewModels
                 });
                 if (MessageBox.Show("Register completed", "Register", MessageBoxButton.OK) == MessageBoxResult.OK)
                 {
+                    var loginViewModel = IoC.Get < LoginViewModel>();
+                    loginViewModel.Username = Username;
                     _eventAggregator.PublishOnUIThread(new NavigateMessage()
                     {
-                        Screen = IoC.Get<LoginViewModel>()
+                        Screen = loginViewModel
                     });
                 }
             }
-            catch (Exception e)
+            catch (KsManagerApiException ex)
             {
-                Console.WriteLine(e);
-                throw;
+                MessageBox.Show(ex.Message);
             }
         }
     }

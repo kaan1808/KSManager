@@ -67,6 +67,11 @@ namespace KSManager_API.Controllers
         [HttpPost]
         public async Task<IActionResult> Register([FromBody]RegisterObject registerObject)
         {
+            var existingUser = _database.User.SingleOrDefault(x => x.Username == registerObject.Username);
+
+            if (existingUser != null)
+                return Conflict(new {message = "User already exist"});
+            
             var salt = new byte[32];
             using (var rng = new RNGCryptoServiceProvider())
             {

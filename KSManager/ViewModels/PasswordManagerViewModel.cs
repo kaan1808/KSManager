@@ -16,23 +16,22 @@ namespace KSManager.ViewModels
         : Screen
     {
         private readonly IKsManagerApi _ksManagerApi;
+        private readonly IEventAggregator _eventAggregator;
 
         private CancellationTokenSource _cancellationTokenSource;
+
+        private PasswordManagerDetailViewModel _passwordManagerDetail;
 
         private BindableCollection<SmallPasswordEntry> _entries;
         private SmallPasswordEntry _selecetedListEntry;
 
-        private PasswordEntry _selectedEntry;
-        private bool _isNewEntry;
-
         private PackIconKind _packIconKind;
 
-        public PasswordManagerViewModel(IKsManagerApi ksManagerApi)
+        public PasswordManagerViewModel(IKsManagerApi ksManagerApi, IEventAggregator eventAggregator)
         {
             _ksManagerApi = ksManagerApi;
+            _eventAggregator = eventAggregator;
             PackIconKind = PackIconKind.Key;
-
-
         }
 
         public PackIconKind PackIconKind
@@ -47,17 +46,26 @@ namespace KSManager.ViewModels
             set
             {
                 Set(ref _selecetedListEntry, value);
+                NotifyOfPropertyChange(() => CanDeleteEntry);
 
                 _cancellationTokenSource?.Cancel();
                 _cancellationTokenSource = new CancellationTokenSource();
-                LoadEntry(SelectedListEntry.Id, _cancellationTokenSource.Token);
+                PasswordManagerDetail.LoadEntry(_selecetedListEntry.Id, _cancellationTokenSource.Token);
             }
         }
 
-        public PasswordEntry SelectedEntry
+        public PasswordManagerDetailViewModel PasswordManagerDetail
         {
-            get => _selectedEntry;
-            set => Set(ref _selectedEntry, value);
+            get
+            {
+                if (_passwordManagerDetail == null && _selecetedListEntry != null)
+                {
+                    CreateDetailViewModel();
+                }
+
+                return _passwordManagerDetail;
+            }
+            set => Set(ref _passwordManagerDetail, value);
         }
 
         public override string DisplayName => "Password Manager";
@@ -70,6 +78,43 @@ namespace KSManager.ViewModels
 
         protected override async void OnActivate()
         {
+            await GetEntryList(); 
+        }
+
+        public void NewEntry()
+        {
+            CreateDetailViewModel();
+            PasswordManagerDetail.SelectedEntry = new PasswordEntry();
+        }
+
+        public bool CanDeleteEntry => SelectedListEntry != null;
+
+        public void DeleteEntry()
+        {
+            _ksManagerApi.DeletePasswordEntry(SelectedListEntry.Id, CancellationToken.None);
+            Entries.Remove(SelectedListEntry);
+
+            if (Entries.Count <= 0)
+            {
+                _eventAggregator.PublishOnUIThread(new NavigateMessage()
+                {
+                    Screen = IoC.Get<LoginViewModel>()
+                });
+            }
+        }
+
+        private void CreateDetailViewModel()
+        {
+            if (_passwordManagerDetail == null)
+            {
+                var detail = IoC.Get<PasswordManagerDetailViewModel>();
+                detail.Parent = this;
+                PasswordManagerDetail = detail;   
+            }
+        }
+
+        public async Task GetEntryList()
+        {
             Entries = new BindableCollection<SmallPasswordEntry>((await _ksManagerApi.GetPasswordEntriesSmall())
                 .Select(x => new SmallPasswordEntry
                 {
@@ -78,92 +123,6 @@ namespace KSManager.ViewModels
                     Icon = x.Icon,
                     Username = x.Username
                 }));
-            if(SelectedEntry != null)
-                SelectedListEntry = Entries.First();
-        }
-
-        private async void LoadEntry(Guid id, CancellationToken cancellationToken)
-        {
-            try
-            {
-                var entry = await _ksManagerApi.GetPasswordEntry(id, cancellationToken);
-                SelectedEntry = new PasswordEntry
-                {
-                    Id = entry.Id,
-                    Title = entry.Title,
-                    Email = entry.Email,
-                    Icon = entry.Icon,
-                    LastChanges = entry.LastChanges,
-                    Note = entry.Note,
-                    Password = entry.Password,
-                    Securityanswer = entry.SecurityAnswer,
-                    Securityquestion = entry.SecurityQuestion,
-                    Url = entry.Url,
-                    Username = entry.Username
-                };
-                await _ksManagerApi.AddPasswordEntry(entry, CancellationToken.None);
-                _isNewEntry = false;
-            }
-            catch (KsManagerApiException ex)
-            {
-                // TODO:
-                MessageBox.Show(ex.Message);
-            }
-            catch (OperationCanceledException)
-            {
-            }
-        }
-
-        public async Task SaveEntry()
-        {
-            if (_isNewEntry)
-            {
-                var newEntry = new Api.Client.Model.PasswordEntry
-                {
-                    Email = SelectedEntry.Email,
-                    Title = SelectedEntry.Title,
-                    SecurityAnswer = SelectedEntry.Securityanswer,
-                    SecurityQuestion = SelectedEntry.Securityquestion,
-                    Icon = SelectedEntry.Icon,
-                    Note = SelectedEntry.Note,
-                    Password = SelectedEntry.Password,
-                    Url = SelectedEntry.Url,
-                    Username = SelectedEntry.Username
-                };
-            }
-
-            var content = new Api.Client.Model.PasswordEntry
-            {
-                Email = SelectedEntry.Email,
-                Title = SelectedEntry.Title,
-                SecurityAnswer = SelectedEntry.Securityanswer,
-                SecurityQuestion = SelectedEntry.Securityquestion,
-                Icon = SelectedEntry.Icon,
-                Note = SelectedEntry.Note,
-                Id = SelectedEntry.Id,
-                LastChanges = SelectedEntry.LastChanges,
-                Password = SelectedEntry.Password,
-                Url = SelectedEntry.Url,
-                Username = SelectedEntry.Username
-
-            };
-
-            await _ksManagerApi.UpdatePasswordEntry(content);
-            LoadEntry(content.Id, CancellationToken.None);
-
-            var listBoxItem = Entries.SingleOrDefault(x => x.Id == content.Id);
-            if (listBoxItem != null)
-            {
-                listBoxItem.Title = content.Title;
-                listBoxItem.Username = content.Username;
-                listBoxItem.Icon = content.Icon;
-            }
-        }
-
-        public void NewEntry()
-        {
-            SelectedEntry = new PasswordEntry();
-            _isNewEntry = true;
         }
     }
 }

@@ -17,8 +17,8 @@ namespace KSManager.Model
         private string _password;
         private string _email;
         private string _url;
-        private string _securityquestion;
-        private string _securityanswer;
+        private string _securityQuestion;
+        private string _securityAnswer;
         private string _note;
         private DateTime _lastChanges;
 
@@ -62,16 +62,16 @@ namespace KSManager.Model
             set => Set(ref _url, value);
         }
 
-        public string Securityquestion
+        public string SecurityQuestion
         {
-            get => _securityquestion;
-            set => Set(ref _securityquestion, value);
+            get => _securityQuestion;
+            set => Set(ref _securityQuestion, value);
         }
 
-        public string Securityanswer
+        public string SecurityAnswer
         {
-            get => _securityanswer;
-            set => Set(ref _securityanswer, value);
+            get => _securityAnswer;
+            set => Set(ref _securityAnswer, value);
         }
 
         public string Note

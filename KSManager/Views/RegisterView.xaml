@@ -60,7 +60,7 @@
                         <Button Width="180" 
                                 Margin="10"
                                 Content="REGISTER"
-                                Command="{Binding RegisterCommand}">
+                                x:Name="Register">
                         </Button>
                     </StackPanel>
 

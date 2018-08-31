@@ -24,18 +24,17 @@ namespace KSManager.Api
         Task<PasswordEntry> GetPasswordEntry(Guid id);
         Task<PasswordEntry> GetPasswordEntry(Guid id,CancellationToken cancellationToken);
 
-        Task UpdatePasswordEntry(PasswordEntry entry);
-        Task UpdatePasswordEntry(PasswordEntry entry, CancellationToken cancellationToken);
+        Task<PasswordEntry> SavePasswordEntry(PasswordEntry entry);
 
-        Task AddPasswordEntry(PasswordEntry entry);
+        Task<PasswordEntry> SavePasswordEntry(PasswordEntry entry, CancellationToken cancellationToken);
 
-        Task AddPasswordEntry(PasswordEntry entry, CancellationToken cancellationToken);
+        Task DeletePasswordEntry(Guid id);
 
-        Task Register(RegisterObject registerObject);
-
-        Task Register(RegisterObject registerObject, CancellationToken cancellationToken);
+        Task DeletePasswordEntry(Guid id, CancellationToken cancellationToken);
 
 
+        Task<RegisterObject> Register(RegisterObject registerObject);
 
+        Task<RegisterObject> Register(RegisterObject registerObject, CancellationToken cancellationToken);
     }
 }

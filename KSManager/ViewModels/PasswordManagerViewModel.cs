@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using AutoMapper;
 using Caliburn.Micro;
 using KSManager.Api;
 using KSManager.Model;
@@ -94,13 +95,26 @@ namespace KSManager.ViewModels
             _ksManagerApi.DeletePasswordEntry(SelectedListEntry.Id, CancellationToken.None);
             Entries.Remove(SelectedListEntry);
 
-            if (Entries.Count <= 0)
+        }
+
+        public async void CopyEntry()
+        {
+            var entry = await _ksManagerApi.GetPasswordEntry(SelectedListEntry.Id, CancellationToken.None);
+            var copy = new PasswordEntry
             {
-                _eventAggregator.PublishOnUIThread(new NavigateMessage()
-                {
-                    Screen = IoC.Get<LoginViewModel>()
-                });
-            }
+                Email = entry.Email,
+                Icon = entry.Icon,
+                Title = entry.Title + ("(Copy)"),
+                Password = entry.Password,
+                SecurityAnswer = entry.SecurityAnswer,
+                SecurityQuestion = entry.SecurityQuestion,
+                Url = entry.Url,
+                Username = entry.Username,
+                Note = entry.Note
+            };
+
+            await _ksManagerApi.SavePasswordEntry(Mapper.Map<Api.Client.Model.PasswordEntry>(copy),CancellationToken.None);
+            await GetEntryList();
         }
 
         private void CreateDetailViewModel()
@@ -123,6 +137,17 @@ namespace KSManager.ViewModels
                     Icon = x.Icon,
                     Username = x.Username
                 }));
+        }
+
+        public void RefreshEntries(Api.Client.Model.PasswordEntry newEntry, Api.Client.Model.PasswordEntry content)
+        {
+            var listBoxItem = Entries.SingleOrDefault(x => x.Id == newEntry.Id);
+            if (listBoxItem != null)
+            {
+                listBoxItem.Title = content.Title;
+                listBoxItem.Username = content.Username;
+                listBoxItem.Icon = content.Icon;
+            }
         }
     }
 }

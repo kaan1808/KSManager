@@ -4,10 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KSManager.Views"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:viewModel="clr-namespace:KSManager.ViewModels"
+        xmlns:controlls="clr-namespace:KSManager.Controlls"
         mc:Ignorable="d"
         Title="KSManager" SizeToContent="Manual" WindowStartupLocation="CenterScreen">
 
-    <Grid>
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewModel:ImageDialogViewModel}">
+            <controlls:ImageDialog/>
+        </DataTemplate>
+    </Window.Resources>
+
+    <materialDesign:DialogHost CloseOnClickAway="True">
         <ContentControl x:Name="ActiveItem" ></ContentControl>
-    </Grid>
+    </materialDesign:DialogHost>
 </Window>

@@ -26,8 +26,7 @@ namespace KSManager_API.Migrations
 
                     b.Property<string>("Email");
 
-                    b.Property<byte[]>("Icon")
-                        .HasMaxLength(524288);
+                    b.Property<int?>("Icon");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()

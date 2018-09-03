@@ -13,7 +13,7 @@ namespace KSManager.Model
         private Guid _id;
         private string _title;
         private string _username;
-        private byte[] _icon;
+        private int _icon;
 
         public Guid Id
         {
@@ -33,7 +33,7 @@ namespace KSManager.Model
             set => Set(ref _username, value);
         }
 
-        public byte[] Icon
+        public int Icon
         {
             get => _icon;
             set => Set(ref _icon, value);

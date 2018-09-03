@@ -32,7 +32,7 @@ namespace KSManager_API.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     UserId = table.Column<Guid>(nullable: false),
                     Title = table.Column<string>(nullable: false),
-                    Icon = table.Column<byte[]>(nullable: true),
+                    Icon = table.Column<int>(nullable: true),
                     Username = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
@@ -40,7 +40,8 @@ namespace KSManager_API.Migrations
                     SecurityQuestion = table.Column<string>(nullable: true),
                     SecurityAnswer = table.Column<string>(nullable: true),
                     Note = table.Column<string>(nullable: true),
-                    LastChanges = table.Column<DateTime>(nullable: false)
+                    LastChanges = table.Column<DateTime>(nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {

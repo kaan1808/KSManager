@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -9,6 +10,7 @@ using AutoMapper;
 using Caliburn.Micro;
 using KSManager.Api;
 using KSManager.Model;
+using MaterialDesignThemes.Wpf;
 
 namespace KSManager.ViewModels
 {
@@ -17,15 +19,17 @@ namespace KSManager.ViewModels
     {
         private readonly IKsManagerApi _ksManagerApi;
         private PasswordEntry _selectedEntry;
-
+        private int _icon;
         private PasswordManagerViewModel _parent;
-      
+
+        private ImageDialogViewModel _imageDialog;
 
         public PasswordManagerDetailViewModel(IKsManagerApi ksManagerApi)
         {
             _ksManagerApi = ksManagerApi;
         }
 
+        #region Properties
         public PasswordEntry SelectedEntry
         {
             get => _selectedEntry;
@@ -37,6 +41,8 @@ namespace KSManager.ViewModels
             get => _parent;
             set => Set(ref _parent, value);
         }
+        #endregion Properties
+
 
         public async void LoadEntry(Guid id, CancellationToken cancellationToken)
         {
@@ -61,15 +67,18 @@ namespace KSManager.ViewModels
             var newEntry = await _ksManagerApi.SavePasswordEntry(content);
             LoadEntry(newEntry.Id, CancellationToken.None);
 
-            var listBoxItem = Parent.Entries.SingleOrDefault(x => x.Id == newEntry.Id);
-            if (listBoxItem != null)
-            {
-                listBoxItem.Title = content.Title;
-                listBoxItem.Username = content.Username;
-                listBoxItem.Icon = content.Icon;
-            }
-
+            Parent.RefreshEntries(newEntry, content);
             await Parent.GetEntryList();
+        }
+
+        public async void Icons()
+        {
+           var result =  await DialogHost.Show(_imageDialog ??(_imageDialog = new ImageDialogViewModel()));
+            if (result != null)
+            {
+                SelectedEntry.Icon = (int)result;
+                Parent.SelectedListEntry.Icon = SelectedEntry.Icon;
+            }
         }
     }
 

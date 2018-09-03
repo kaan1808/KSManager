@@ -33,6 +33,8 @@ namespace KSManager_API.DB
             modelBuilder.Entity<PasswordStorageData>()
                 .Property(psd => psd.IsDeleted)
                 .HasDefaultValue(false);
+
+            modelBuilder.Entity<PasswordStorageData>().Property(psd => psd.Icon).HasDefaultValueSql("1");
         }
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KSManager_API.Migrations
 {
     [DbContext(typeof(KsDatabase))]
-    [Migration("20180827134344_v1")]
-    partial class v1
+    [Migration("20180903140817_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,8 +28,11 @@ namespace KSManager_API.Migrations
 
                     b.Property<string>("Email");
 
-                    b.Property<byte[]>("Icon")
-                        .HasMaxLength(524288);
+                    b.Property<int?>("Icon");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(false);
 
                     b.Property<DateTime>("LastChanges")
                         .ValueGeneratedOnAddOrUpdate()

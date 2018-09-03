@@ -20,8 +20,7 @@ namespace KSManager_API.DB
         [Required]
         public string Title { get; set; }
 
-        [MaxLength(524288)]
-        public byte[] Icon { get; set; }
+        public int? Icon { get; set; }
 
         public string Username { get; set; }
 

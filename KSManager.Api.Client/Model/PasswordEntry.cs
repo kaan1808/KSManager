@@ -18,7 +18,7 @@ namespace KSManager.Api.Client.Model
         public string Username { get; set; }
 
         [JsonProperty("icon")]
-        public byte[] Icon { get; set; }
+        public int Icon { get; set; }
 
         [JsonProperty("password")]
         public string Password { get; set; }

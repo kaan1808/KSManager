@@ -11,7 +11,7 @@ namespace KSManager.Api
 {
     public interface IKsManagerApi
     {
-        string AccessToken { get; }
+        string AccessToken { get;}
 
         Task Authenticate(string username, string password);
 
@@ -36,5 +36,7 @@ namespace KSManager.Api
         Task<RegisterObject> Register(RegisterObject registerObject);
 
         Task<RegisterObject> Register(RegisterObject registerObject, CancellationToken cancellationToken);
+
+        void ClearProperties();
     }
 }

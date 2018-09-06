@@ -17,18 +17,17 @@ namespace KSManager.Api
     {
         private const string BaseUri = "http://localhost:51427/api/";
 
-        private readonly HttpClient _httpClient;
+        private static HttpClient _httpClient;
 
         private string _accessToken;
 
         public KsManagerApi()
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri(BaseUri);
+            _httpClient = new HttpClient {BaseAddress = new Uri(BaseUri)};
         }
 
         public string AccessToken => _accessToken;
-
+       
         public async Task Authenticate(string username, string password)
         {
             await Authenticate(username, password, CancellationToken.None);
@@ -198,6 +197,12 @@ namespace KSManager.Api
             }
 
 
+        }
+
+        public void ClearProperties()
+        {
+            _httpClient = new HttpClient{BaseAddress = new Uri(BaseUri)};
+            _accessToken = null;
         }
     }
 }

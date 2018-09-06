@@ -17,17 +17,21 @@ namespace KSManager.ViewModels
     public class PasswordManagerDetailViewModel
         : Screen
     {
+        #region fields
         private readonly IKsManagerApi _ksManagerApi;
         private PasswordEntry _selectedEntry;
-        private int _icon;
         private PasswordManagerViewModel _parent;
-
         private ImageDialogViewModel _imageDialog;
+        #endregion fields
 
-        public PasswordManagerDetailViewModel(IKsManagerApi ksManagerApi)
+        #region constructor
+        public  PasswordManagerDetailViewModel(IKsManagerApi ksManagerApi)
         {
             _ksManagerApi = ksManagerApi;
+            
         }
+
+        #endregion constructor
 
         #region Properties
         public PasswordEntry SelectedEntry
@@ -42,7 +46,6 @@ namespace KSManager.ViewModels
             set => Set(ref _parent, value);
         }
         #endregion Properties
-
 
         public async void LoadEntry(Guid id, CancellationToken cancellationToken)
         {
@@ -66,9 +69,9 @@ namespace KSManager.ViewModels
             var content = Mapper.Map<Api.Client.Model.PasswordEntry>(SelectedEntry);
             var newEntry = await _ksManagerApi.SavePasswordEntry(content);
             LoadEntry(newEntry.Id, CancellationToken.None);
-
             Parent.RefreshEntries(newEntry, content);
-            await Parent.GetEntryList();
+
+            Parent.SelectedListEntry = Parent.Entries.SingleOrDefault(x => x.Id == newEntry.Id);
         }
 
         public async void Icons()
@@ -77,7 +80,10 @@ namespace KSManager.ViewModels
             if (result != null)
             {
                 SelectedEntry.Icon = (int)result;
-                Parent.SelectedListEntry.Icon = SelectedEntry.Icon;
+                if (Parent.SelectedListEntry != null)
+                {
+                    Parent.SelectedListEntry.Icon = SelectedEntry.Icon;
+                }
             }
         }
     }

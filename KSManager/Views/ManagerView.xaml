@@ -13,6 +13,11 @@
         <Border DockPanel.Dock="Top" BorderBrush="Black" BorderThickness="0,0,0,1">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="File">
+                    <MenuItem Header="Logout" x:Name="Logout">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="Logout"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <MenuItem Header="Settings" x:Name="Settings">
                         <MenuItem.Icon>
                             <materialDesign:PackIcon Kind="Settings"/>

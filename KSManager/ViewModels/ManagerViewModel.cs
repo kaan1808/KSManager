@@ -14,14 +14,16 @@ namespace KSManager.ViewModels
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IWindowManager _windowManager;
+        private readonly IKsManagerApi _ksManagerApi;
 
         private BindableCollection<Screen> _modules;
         private Screen _selectedModule;
 
-        public ManagerViewModel(IEventAggregator eventAggregator, IWindowManager windowManager)
+        public ManagerViewModel(IEventAggregator eventAggregator, IWindowManager windowManager, IKsManagerApi ksManagerApi)
         {
             _eventAggregator = eventAggregator;
             _windowManager = windowManager;
+            _ksManagerApi = ksManagerApi;
 
             Modules = new BindableCollection<Screen>
             {
@@ -45,6 +47,16 @@ namespace KSManager.ViewModels
                 Set(ref _selectedModule, value);
                 ActivateItem(SelectedModule);
             }
+        }
+
+        public void Logout()
+        {
+            _eventAggregator.PublishOnUIThread(new NavigateMessage()
+            {
+                Screen = new LoginViewModel(_ksManagerApi, _eventAggregator , true)
+            });
+
+            TryClose();
         }
 
         public void Settings()

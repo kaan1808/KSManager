@@ -16,9 +16,9 @@ namespace KSManager.ViewModels
     public class PasswordManagerViewModel
         : Screen
     {
+        #region fields
         private readonly IKsManagerApi _ksManagerApi;
         private readonly IEventAggregator _eventAggregator;
-
         private CancellationTokenSource _cancellationTokenSource;
 
         private PasswordManagerDetailViewModel _passwordManagerDetail;
@@ -27,14 +27,18 @@ namespace KSManager.ViewModels
         private SmallPasswordEntry _selecetedListEntry;
 
         private PackIconKind _packIconKind;
+        #endregion fields
 
+        #region constructor
         public PasswordManagerViewModel(IKsManagerApi ksManagerApi, IEventAggregator eventAggregator)
         {
             _ksManagerApi = ksManagerApi;
             _eventAggregator = eventAggregator;
             PackIconKind = PackIconKind.Key;
         }
+        #endregion constructor
 
+        #region Properties
         public PackIconKind PackIconKind
         {
             get => _packIconKind;
@@ -48,6 +52,7 @@ namespace KSManager.ViewModels
             {
                 Set(ref _selecetedListEntry, value);
                 NotifyOfPropertyChange(() => CanDeleteEntry);
+                NotifyOfPropertyChange(() => CanCopyEntry);
 
                 _cancellationTokenSource?.Cancel();
                 _cancellationTokenSource = new CancellationTokenSource();
@@ -76,25 +81,32 @@ namespace KSManager.ViewModels
             get => _entries;
             set => Set(ref _entries, value);
         }
+        #endregion Properties
 
         protected override async void OnActivate()
         {
             await GetEntryList(); 
         }
 
+        #region public methods
+        public bool CanDeleteEntry => SelectedListEntry != null;
+        public bool CanCopyEntry => SelectedListEntry != null;
         public void NewEntry()
         {
             CreateDetailViewModel();
             PasswordManagerDetail.SelectedEntry = new PasswordEntry();
         }
 
-        public bool CanDeleteEntry => SelectedListEntry != null;
-
         public void DeleteEntry()
         {
             _ksManagerApi.DeletePasswordEntry(SelectedListEntry.Id, CancellationToken.None);
-            Entries.Remove(SelectedListEntry);
+            var index = Entries.IndexOf(SelectedListEntry);
 
+            Entries.Remove(SelectedListEntry);
+            if (Entries.Count == 0)
+                PasswordManagerDetail = null;
+            else    
+                SelectedListEntry = Entries[index - 1];
         }
 
         public async void CopyEntry()
@@ -112,19 +124,10 @@ namespace KSManager.ViewModels
                 Username = entry.Username,
                 Note = entry.Note
             };
-
-            await _ksManagerApi.SavePasswordEntry(Mapper.Map<Api.Client.Model.PasswordEntry>(copy),CancellationToken.None);
-            await GetEntryList();
-        }
-
-        private void CreateDetailViewModel()
-        {
-            if (_passwordManagerDetail == null)
-            {
-                var detail = IoC.Get<PasswordManagerDetailViewModel>();
-                detail.Parent = this;
-                PasswordManagerDetail = detail;   
-            }
+            var newEntry = await _ksManagerApi.SavePasswordEntry(Mapper.Map<Api.Client.Model.PasswordEntry>(copy), CancellationToken.None);
+            
+            RefreshEntries(Mapper.Map<Api.Client.Model.PasswordEntry>(newEntry), Mapper.Map<Api.Client.Model.PasswordEntry>(entry));
+            SelectedListEntry = Entries.SingleOrDefault(x => x.Id == newEntry.Id);
         }
 
         public async Task GetEntryList()
@@ -148,6 +151,30 @@ namespace KSManager.ViewModels
                 listBoxItem.Username = content.Username;
                 listBoxItem.Icon = content.Icon;
             }
+            else
+            {
+                Entries.Add(new SmallPasswordEntry()
+                {
+                    Icon = newEntry.Icon,
+                    Id = newEntry.Id,
+                    Title = newEntry.Title,
+                    Username = newEntry.Username
+                });
+            }
+
         }
+        #endregion public methods
+
+        #region private methods
+        private void CreateDetailViewModel()
+        {
+            if (_passwordManagerDetail == null)
+            {
+                var detail = IoC.Get<PasswordManagerDetailViewModel>();
+                detail.Parent = this;
+                PasswordManagerDetail = detail;
+            }
+        }
+        #endregion private methods
     }
 }

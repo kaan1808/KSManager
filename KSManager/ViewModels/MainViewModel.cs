@@ -7,10 +7,12 @@ using Caliburn.Micro;
 
 namespace KSManager.ViewModels
 {
-    public class MainViewModel : Conductor<Screen>.Collection.OneActive, IHandle<NavigateMessage>
+    public class MainViewModel
+        : Conductor<Screen>.Collection.OneActive,
+            IHandle<NavigateMessage>
     {
         private readonly IEventAggregator _eventAggregator;
-       
+
 
         public MainViewModel(IEventAggregator eventAggregator)
         {

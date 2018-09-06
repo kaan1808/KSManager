@@ -17,11 +17,16 @@ namespace KSManager.ViewModels
         private string _username;
         private string _password;
 
-        public LoginViewModel(IKsManagerApi ksManagerApi, IEventAggregator eventAggregator)
+        public LoginViewModel(IKsManagerApi ksManagerApi, IEventAggregator eventAggregator, bool accessTokenIsGenerated)
         {
             _eventAggregator = eventAggregator;
-            _ksManagerApi = ksManagerApi;
-            
+            if(accessTokenIsGenerated == false)
+                _ksManagerApi = ksManagerApi;
+            else
+            {
+                ksManagerApi.ClearProperties();
+                _ksManagerApi = ksManagerApi;
+            }
         }
 
         public string Username
@@ -56,6 +61,7 @@ namespace KSManager.ViewModels
                 {
                     Screen = IoC.Get<ManagerViewModel>()
                 });
+
             }
             catch (KsManagerApiException ex)
             {

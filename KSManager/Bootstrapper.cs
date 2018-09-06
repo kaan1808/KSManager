@@ -35,15 +35,14 @@ namespace KSManager
                 .Singleton<IEventAggregator, EventAggregator>()
 
                 .Singleton<MainViewModel>()
-                .Singleton<LoginViewModel>()
-                .Singleton<RegisterViewModel>()
-                .Singleton<ManagerViewModel>()
-                .Singleton<PasswordManagerViewModel>()
-                .Singleton<PasswordManagerDetailViewModel>()
-                .Singleton<SettingsViewModel>()
+                .PerRequest<LoginViewModel>()
+                .PerRequest<RegisterViewModel>()
+                .PerRequest<ManagerViewModel>()
+                .PerRequest<PasswordManagerViewModel>()
+                .PerRequest<PasswordManagerDetailViewModel>()
+                .PerRequest<SettingsViewModel>()
+                .Singleton<PasswordManagerNoEntryViewModel>()
                 
-               
-
                 .Singleton<IKsManagerApi, KsManagerApi>();
         }
 

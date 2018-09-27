@@ -7,32 +7,59 @@
         xmlns:Properties="clr-namespace:KSManager.Properties"
         xmlns:materialDesignColors="clr-namespace:MaterialDesignColors;assembly=MaterialDesignColors"
         xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Settings" Height="450" Width="800" ResizeMode="NoResize" >
+        Title="Settings" Height="450" Width="800" WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterOwner">
 
-    <dragablz:TabablzControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FixedHeaderCount="2">
-        <TabItem Header="Color Settings">
-            <DockPanel LastChildFill="True">
-                <ListBox ItemsSource="{Binding Swatches}" DockPanel.Dock="Top" Margin="15">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate DataType="{x:Type materialDesignColors:Swatch}">
-                            <Button Height="50" Width="120" Foreground="Black" Command="{Binding DataContext.ApplySwatchCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding Name}" Content="{Binding Name}" ToolTip="{Binding Name}">
-                                <Button.Background>
-                                    <SolidColorBrush Color="{Binding AccentExemplarHue.Color, Mode=OneTime}"></SolidColorBrush>
-                                </Button.Background>
-                            </Button>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel IsItemsHost="True" Orientation="Horizontal" MaxWidth="550"></WrapPanel>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                </ListBox>
-            </DockPanel>
-        </TabItem>
-       
-        <TabItem Header="TODO:">
-        </TabItem>
-    </dragablz:TabablzControl>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="35"/>
+    </WindowChrome.WindowChrome>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Border Background="#1E1E1E" Opacity="0.9">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" WindowChrome.IsHitTestVisibleInChrome="True">
+
+                    <Button x:Name="CloseButton" Style="{StaticResource MaterialDesignFlatButton}">
+                        <materialDesign:PackIcon Kind="WindowClose" Foreground="White"/>
+                    </Button>
+
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <dragablz:TabablzControl Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FixedHeaderCount="2" Background="White">
+            <TabItem Header="Color Settings">
+                <DockPanel LastChildFill="True">
+                    <ListBox ItemsSource="{Binding Swatches}" DockPanel.Dock="Top" Margin="15">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type materialDesignColors:Swatch}">
+                                <Button Height="50" Width="120" Foreground="Black" Command="{Binding DataContext.ApplySwatchCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding Name}" Content="{Binding Name}" ToolTip="{Binding Name}">
+                                    <Button.Background>
+                                        <SolidColorBrush Color="{Binding AccentExemplarHue.Color, Mode=OneTime}"></SolidColorBrush>
+                                    </Button.Background>
+                                </Button>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel IsItemsHost="True" Orientation="Horizontal" MaxWidth="550"></WrapPanel>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Header="TODO:">
+            </TabItem>
+        </dragablz:TabablzControl>
+
+    </Grid>
+
+    
 </Window>

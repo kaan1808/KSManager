@@ -22,6 +22,9 @@ namespace KSManager.Views
         public MainView()
         {
             InitializeComponent();
+            MinimizeButton.Click += (s, e) => WindowState = WindowState.Minimized;
+            MaximizeButton.Click += (s, e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+            CloseButton.Click += (s, e) => Close();
         }
     }
 }

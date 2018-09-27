@@ -8,7 +8,11 @@
         xmlns:viewModel="clr-namespace:KSManager.ViewModels"
         xmlns:controlls="clr-namespace:KSManager.Controlls"
         mc:Ignorable="d"
-        Title="KSManager" SizeToContent="Manual" WindowStartupLocation="CenterScreen">
+        Title="KSManager" SizeToContent="Manual" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="Transparent">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="35"/>
+    </WindowChrome.WindowChrome>
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModel:ImageDialogViewModel}">
@@ -17,6 +21,35 @@
     </Window.Resources>
 
     <materialDesign:DialogHost CloseOnClickAway="True">
-        <ContentControl x:Name="ActiveItem" ></ContentControl>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Border Background="#1E1E1E" Opacity="0.9">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" WindowChrome.IsHitTestVisibleInChrome="True">
+
+                        <Button x:Name="MinimizeButton" Style="{StaticResource MaterialDesignFlatButton}">
+                            <materialDesign:PackIcon Kind="WindowMinimize" Foreground="White"/>
+                        </Button>
+
+                        <Button x:Name="MaximizeButton" Style="{StaticResource MaterialDesignFlatButton}">
+                            <materialDesign:PackIcon Kind="WindowMaximize" Foreground="White"/>
+                        </Button>
+
+                        <Button x:Name="CloseButton" Style="{StaticResource MaterialDesignFlatButton}">
+                            <materialDesign:PackIcon Kind="WindowClose" Foreground="White"/>
+                        </Button>
+                       
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <ContentControl  x:Name="ActiveItem" ></ContentControl>
+            </Grid>
+        </Grid>
     </materialDesign:DialogHost>
 </Window>

@@ -23,6 +23,7 @@ namespace KSManager.Views
         public SettingsView()
         {
             InitializeComponent();
+            CloseButton.Click += (s, e) => Close();
         }
 
         private void ToggleButton_Checked(object sender, RoutedEventArgs e)

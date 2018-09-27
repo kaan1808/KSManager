@@ -1,11 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MaterialDesignThemes.Wpf;
 using Screen = Caliburn.Micro.Screen;
 
 namespace KSManager.ViewModels

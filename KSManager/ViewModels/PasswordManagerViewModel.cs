@@ -20,7 +20,7 @@ namespace KSManager.ViewModels
         private readonly IKsManagerApi _ksManagerApi;
         private readonly IEventAggregator _eventAggregator;
         private CancellationTokenSource _cancellationTokenSource;
-
+        private bool _isNew;
         private PasswordManagerDetailViewModel _passwordManagerDetail;
 
         private BindableCollection<SmallPasswordEntry> _entries;
@@ -56,7 +56,15 @@ namespace KSManager.ViewModels
 
                 _cancellationTokenSource?.Cancel();
                 _cancellationTokenSource = new CancellationTokenSource();
+
+                if (_isNew)
+                {
+                    _isNew = false;
+                    return;
+                }
+
                 PasswordManagerDetail.LoadEntry(_selecetedListEntry.Id, _cancellationTokenSource.Token);
+                
             }
         }
 
@@ -95,6 +103,8 @@ namespace KSManager.ViewModels
         {
             CreateDetailViewModel();
             PasswordManagerDetail.SelectedEntry = new PasswordEntry();
+            _isNew = true;
+            SelectedListEntry = new SmallPasswordEntry();
         }
 
         public void DeleteEntry()

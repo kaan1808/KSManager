@@ -60,6 +60,7 @@
                         <CheckBox x:Name="RememberMe"
                                   Content="Remember me" 
                                   HorizontalAlignment="Center"
+                                  VerticalContentAlignment="Center"
                                   Margin="10,5,10,10"/>
                     </StackPanel>
                 </Border>

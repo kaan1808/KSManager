@@ -29,21 +29,32 @@
 
             <Grid Grid.Row="0">
                 <Border Background="#1E1E1E" Opacity="0.9">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" WindowChrome.IsHitTestVisibleInChrome="True">
+                    <Grid>
+                        <Image Source="pack://application:,,,/Images/mushroom.png" Height="32" HorizontalAlignment="Left" Margin="10,0,0,0" ToolTip="Wer das ließt ist blöd"></Image>
+                        <TextBlock Text="KSManger" HorizontalAlignment="Center"  FontSize="20">
+                            <TextBlock.Foreground>
+                                <LinearGradientBrush>
+                                    <GradientStop Color="red" Offset="0.1"/>
+                                    <GradientStop Color="Blue" Offset="1.4"/>
+                                </LinearGradientBrush>
+                            </TextBlock.Foreground>
+                        </TextBlock>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" WindowChrome.IsHitTestVisibleInChrome="True">
 
-                        <Button x:Name="MinimizeButton" Style="{StaticResource MaterialDesignFlatButton}">
-                            <materialDesign:PackIcon Kind="WindowMinimize" Foreground="White"/>
-                        </Button>
+                            <Button x:Name="MinimizeButton" Style="{StaticResource MaterialDesignFlatButton}">
+                                <materialDesign:PackIcon Kind="WindowMinimize" Foreground="White"/>
+                            </Button>
 
-                        <Button x:Name="MaximizeButton" Style="{StaticResource MaterialDesignFlatButton}">
-                            <materialDesign:PackIcon Kind="WindowMaximize" Foreground="White"/>
-                        </Button>
+                            <Button x:Name="MaximizeButton" Style="{StaticResource MaterialDesignFlatButton}">
+                                <materialDesign:PackIcon Kind="WindowMaximize" Foreground="White"/>
+                            </Button>
 
-                        <Button x:Name="CloseButton" Style="{StaticResource MaterialDesignFlatButton}">
-                            <materialDesign:PackIcon Kind="WindowClose" Foreground="White"/>
-                        </Button>
-                       
-                    </StackPanel>
+                            <Button x:Name="CloseButton" Style="{StaticResource MaterialDesignFlatButton}">
+                                <materialDesign:PackIcon Kind="WindowClose" Foreground="White"/>
+                            </Button>
+
+                        </StackPanel>
+                    </Grid>
                 </Border>
             </Grid>
 

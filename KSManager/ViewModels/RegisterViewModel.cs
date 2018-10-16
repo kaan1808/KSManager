@@ -24,14 +24,21 @@ namespace KSManager.ViewModels
             _eventAggregator = eventAggregator;
             _ksManagerApi = ksManagerApi;
         }
-        
+
+
+        #region RelayCommands
+        public RelayCommand<object> RegisterCommand => new RelayCommand<object>(RegisterCommandExecute, RegisterCommandCanExecute);
+
+
+        #endregion
+
         public string Username
         {
             get => _username;
             set
             {
                 Set(ref _username, value);
-                NotifyOfPropertyChange(() => CanRegister);
+                NotifyOfPropertyChange(nameof(RegisterCommand));
             }
         }
 
@@ -41,7 +48,7 @@ namespace KSManager.ViewModels
             set
             {
                 Set(ref _password, value);
-                NotifyOfPropertyChange(() => CanRegister);
+                NotifyOfPropertyChange(nameof(RegisterCommand));
             }
         }
 
@@ -51,10 +58,9 @@ namespace KSManager.ViewModels
             set
             {
                 Set(ref _repeatPassword, value);
-                NotifyOfPropertyChange(() => CanRegister);
+                NotifyOfPropertyChange(nameof(RegisterCommand));
             }
         }
-
 
 
         public void Login()
@@ -68,10 +74,9 @@ namespace KSManager.ViewModels
             });
         }
 
-        public bool CanRegister => !string.IsNullOrWhiteSpace(Username) &&
-                                    !string.IsNullOrWhiteSpace(Password) && Password.Equals(RepeatPassword);
+        private bool RegisterCommandCanExecute(object obj) => !string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password) && Password.Equals(RepeatPassword);
 
-        public async void Register()
+        private async void RegisterCommandExecute(object obj)
         {
             try
             {
@@ -82,7 +87,7 @@ namespace KSManager.ViewModels
                 });
                 if (MessageBox.Show("Register completed", "Register", MessageBoxButton.OK) == MessageBoxResult.OK)
                 {
-                    var loginViewModel = IoC.Get < LoginViewModel>();
+                    var loginViewModel = IoC.Get<LoginViewModel>();
                     loginViewModel.Username = Username;
                     _eventAggregator.PublishOnUIThread(new NavigateMessage()
                     {

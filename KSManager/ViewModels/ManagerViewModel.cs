@@ -27,7 +27,8 @@ namespace KSManager.ViewModels
 
             Modules = new BindableCollection<Screen>
             {
-                IoC.Get<PasswordManagerViewModel>()
+                IoC.Get<PasswordManagerViewModel>(),
+                IoC.Get<ContactManagerViewModel>()
             };
 
             SelectedModule = Modules.First();

@@ -39,6 +39,9 @@
                                 </LinearGradientBrush>
                             </TextBlock.Foreground>
                         </TextBlock>
+
+                        
+                        
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" WindowChrome.IsHitTestVisibleInChrome="True">
 
                             <Button x:Name="MinimizeButton" Style="{StaticResource MaterialDesignFlatButton}">

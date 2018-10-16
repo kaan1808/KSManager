@@ -29,6 +29,9 @@ namespace KSManager.ViewModels
             }
         }
 
+
+        public RelayCommand<object> LoginCommand => new RelayCommand<object>(LoginCommandExecute, LoginCommandCanExecute);
+
         public string Username
         {
             get => _username;
@@ -44,14 +47,15 @@ namespace KSManager.ViewModels
             get => _password;
             set
             {
+
                 Set(ref _password, value);
-                NotifyOfPropertyChange(nameof(CanLogin));
+                NotifyOfPropertyChange(nameof(LoginCommand));
             }
         }
 
-        public bool CanLogin => !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password);
+        private bool LoginCommandCanExecute(object obj) => !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password);
 
-        public async void Login()
+        private async void LoginCommandExecute(object obj)
         {
             try
             {

@@ -7,6 +7,13 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" MinHeight="500" MinWidth="800">
+
+
+    <Control.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding LoginCommand}"/>
+    </Control.InputBindings>
+    
+    
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="/Images/Background_Tomo_Ni_Subs.jpg"/>
@@ -52,7 +59,8 @@
                                  materialDesign:HintAssist.Hint="Password" 
                                  materialDesign:HintAssist.IsFloating="True"/>
 
-                        <Button x:Name="Login"
+                        <Button Command="{Binding LoginCommand}"
+                                x:Name="Login"
                                 Width="180" 
                                 Margin="10,20,10,10" 
                                 Content="LOGIN"/>

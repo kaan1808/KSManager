@@ -41,6 +41,7 @@ namespace KSManager
                 .PerRequest<PasswordManagerViewModel>()
                 .PerRequest<PasswordManagerDetailViewModel>()
                 .PerRequest<SettingsViewModel>()
+                .PerRequest<ContactManagerViewModel>()
                 .Singleton<PasswordManagerNoEntryViewModel>()
                 
                 .Singleton<IKsManagerApi, KsManagerApi>();

@@ -7,6 +7,13 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" d:DesignWidth="800" MinHeight="500" MinWidth="800" >
 
+    <Control.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding RegisterCommand}"/>
+    </Control.InputBindings>
+    
+    
+    
+
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="/Images/Background_Tomo_Ni_Subs.jpg"/>
@@ -57,7 +64,8 @@
                                  materialDesign:HintAssist.Hint="Repeat password" 
                                  materialDesign:HintAssist.IsFloating="True"/>
 
-                        <Button Width="180" 
+                        <Button Command="{Binding RegisterCommand, UpdateSourceTrigger=PropertyChanged}"
+                                Width="180" 
                                 Margin="10"
                                 Content="REGISTER"
                                 x:Name="Register">

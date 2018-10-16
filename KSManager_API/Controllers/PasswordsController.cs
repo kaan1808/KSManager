@@ -124,6 +124,7 @@ namespace KSManager_API.Controllers
             dbEntry.Icon = entry.Icon;
             dbEntry.Password = entry.Password;
             dbEntry.Url = entry.Url;
+            dbEntry.Note = entry.Note;
             dbEntry.Username = entry.Username;
             dbEntry.SecurityAnswer = entry.SecurityAnswer;
             dbEntry.SecurityQuestion = entry.SecurityQuestion;

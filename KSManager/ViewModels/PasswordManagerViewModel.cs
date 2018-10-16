@@ -63,7 +63,8 @@ namespace KSManager.ViewModels
                     return;
                 }
 
-                PasswordManagerDetail.LoadEntry(_selecetedListEntry.Id, _cancellationTokenSource.Token);
+                if(SelectedListEntry != null)
+                    PasswordManagerDetail.LoadEntry(SelectedListEntry.Id, _cancellationTokenSource.Token);
                 
             }
         }
